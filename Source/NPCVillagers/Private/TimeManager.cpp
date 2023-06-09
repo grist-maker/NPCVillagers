@@ -51,7 +51,10 @@ void ATimeManager::ProgressTime(FTimestamp& Progress)
 			{
 				ABaseVillager* NPC = Cast<ABaseVillager>(Villagers[i]);
 				
-				NPC->DoneWork = false;
+				if (NPC != nullptr)
+				{
+					NPC->DoneWork = false;
+				}
 			}
 		}
 	}
@@ -65,8 +68,6 @@ void ATimeManager::ProgressTime(FTimestamp& Progress)
 	{
 		CurrentDay = static_cast<UWeekday>(static_cast<int>(CurrentDay) + AdditionalDays);
 	}
-
-	Cast<APlayerVillager>(Player)->GetDefaultSubobjectByName("DateTime");
 
 	if (AdditionalHours > 0)
 	{
@@ -101,25 +102,27 @@ void ATimeManager::JobUpdate()
 		if (Villagers[i] != nullptr)
 		{
 			ABaseVillager* NPC = Cast<ABaseVillager>(Villagers[i]);
-			if (NPC->State != UState::Talking && !NPC->DoneWork)
+			if (NPC != nullptr && NPC->State != UState::Talking && !NPC->DoneWork && NPC->Career != nullptr)
 			{
-				if (NPC->Career->CommuteTime.Hour <= CurrentTime.Hour && NPC->Career->CommuteTime.Minute <= CurrentTime.Minute && !NPC->Commuting && !NPC->AtWork && NPC->Career->Days.Contains(CurrentDay) && (NPC->Career->EndTime.Hour >= CurrentTime.Hour ))
+				if (NPC->Career->CommuteTime.Hour <= CurrentTime.Hour && NPC->Career->CommuteTime.Minute <= CurrentTime.Minute && !NPC->Commuting && !NPC->AtWork && NPC->Career->Days.Contains(CurrentDay) && (NPC->Career->EndTime.Hour >= CurrentTime.Hour))
 				{
-					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Commuting"));
 					NPC->Commuting = true;
 					NPC->State = UState::Walking;
 					NPC->NPCAIController->MoveToActor(NPC->Career->Workstation, 0, true);
 				}
+				else if (NPC->Commuting && NPC->State != UState::Talking && NPC->GetVelocity().GetAbsMax() < 1)
+				{
+					NPC->NPCAIController->MoveToActor(NPC->Career->Workstation, 0, true);
+				}
+
 				else if (NPC->Career->EndTime.Hour == CurrentTime.Hour && NPC->Career->EndTime.Minute <= CurrentTime.Minute && NPC->AtWork)
 				{
-					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Leaving Job"));
 					NPC->AtWork = false;
 					NPC->DoneWork = true;
 					NPC->State = UState::Idle;
 				}
 				else if (NPC->Commuting && NPC->IsOverlappingActor(NPC->Career->Workstation))
 				{
-					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Beginning work"));
 					NPC->AtWork = true;
 					NPC->Commuting = false;
 					NPC->State = UState::Working;
@@ -137,35 +140,37 @@ void ATimeManager::EnergyUpdate()
 		if (Villagers[i] != nullptr)
 		{
 			ABaseVillager* NPC = Cast<ABaseVillager>(Villagers[i]);
-			if (NPC->State == UState::Working)
+			if (NPC != nullptr)
 			{
-				NPC->Energy -= NPC->JobEnergyDrain;
+				if (NPC->State == UState::Working)
+				{
+					NPC->Energy -= NPC->JobEnergyDrain;
+				}
+				else if (NPC->State == UState::Hobby)
+				{
+					NPC->Energy -= NPC->HobbyEnergyDrain;
+				}
+				else if (NPC->State == UState::Relaxing)
+				{
+					NPC->Energy += NPC->RelaxEnergyGain;
+				}
+				else if (NPC->State == UState::Asleep)
+				{
+					NPC->Energy += NPC->SleepEnergyGain;
+				}
+				else if (NPC->State == UState::Unconscious)
+				{
+					NPC->Energy += NPC->UnconsciousEnergyGain;
+				}
+				else
+				{
+					NPC->Energy -= NPC->BaseEnergyDrain;
+				}
+				NPC->UpdateStatus();
 			}
-			else if (NPC->State == UState::Hobby)
-			{
-				NPC->Energy -= NPC->HobbyEnergyDrain;
-			}
-			else if (NPC->State == UState::Relaxing)
-			{
-				NPC->Energy += NPC->RelaxEnergyGain;
-			}
-			else if (NPC->State == UState::Asleep)
-			{
-				NPC->Energy += NPC->SleepEnergyGain;
-			}
-			else if (NPC->State == UState::Unconscious)
-			{
-				NPC->Energy += NPC->UnconsciousEnergyGain;
-			}
-			else
-			{
-				NPC->Energy -= NPC->BaseEnergyDrain;
-			}
-			NPC->UpdateStatus();
 		}
 	}
 }
-
 
 void ATimeManager::UpdateLighting(float Lux)
 {

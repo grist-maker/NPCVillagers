@@ -32,10 +32,9 @@ FString UDialogBank::GiftReaction(FString GiftName)
 	if (Npc != nullptr)
 	{
 		UDialogBank* NpcJob = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()));
-		if (NpcJob != nullptr)
+		if (NpcJob != nullptr && Npc->NPCAIController != nullptr)
 		{
-			Npc->State = UState::Talking;
-			Npc->NPCAIController->StopMovement();
+			Npc->Talk();
 
 			FString Reaction = "";
 			if (Npc->LikedGifts.Contains(GiftName))
@@ -83,11 +82,10 @@ FString UDialogBank::GiftReaction(FString GiftName)
 FString UDialogBank::HurtReaction()
 {
 	ABaseVillager* Npc = Cast<ABaseVillager>(GetOwner());
-	if (Npc != nullptr)
+	if (Npc != nullptr && Npc->NPCAIController != nullptr && Npc->Career != nullptr)
 	{
 		FString HurtResponse;
-		Npc->State = UState::Talking;
-		Npc->NPCAIController->StopMovement();
+		Npc->Talk();
 		Npc->PlayerAffinity -= (Npc->HurtAffinity);
 
 		if (FMath::RandRange(0, 1))
@@ -96,7 +94,7 @@ FString UDialogBank::HurtReaction()
 		}
 		else
 		{
-			HurtResponse = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()))->HurtReactions[FMath::RandRange(0, HurtReactions.Num() - 1)];
+			HurtResponse = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()))->HurtReactions[FMath::RandRange(0, Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()))->HurtReactions.Num() - 1)];
 		}
 		return HurtResponse;
 	}
@@ -106,13 +104,12 @@ FString UDialogBank::HurtReaction()
 FString UDialogBank::SelectResponse()
 {
 	ABaseVillager* Npc = Cast<ABaseVillager>(GetOwner());
-	if (Npc != nullptr)
+	if (Npc != nullptr && Npc->Career != nullptr)
 	{
 		UDialogBank* NpcJob = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()));
-		if (NpcJob != nullptr)
+		if (NpcJob != nullptr && Npc->NPCAIController != nullptr)
 		{
-			Npc->State = UState::Talking;
-			Npc->NPCAIController->StopMovement();
+			Npc->Talk();
 
 			if (Npc->AtWork || Npc->Commuting)
 			{

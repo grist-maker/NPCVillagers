@@ -39,6 +39,13 @@ void ABaseVillager::Tick(float DeltaTime)
 	}
 }
 
+void ABaseVillager::Talk()
+{
+	State = UState::Talking;
+	NPCAIController->StopMovement();
+	SetActorRotation((PlayerPawn->GetActorLocation() - GetActorLocation()).Rotation());
+}
+
 void ABaseVillager::UpdateStatus()
 {
 	if (PlayerPawn != nullptr && NPCAIController != nullptr && !Commuting && !AtWork && State != UState::Talking)

@@ -216,6 +216,8 @@ public:
 	/// </summary>
 	void UpdateStatus();
 
+	void Talk();
+
 	/// <summary>
 	/// This function wraps up conversation with the NPC by returning them to their previous state.
 	/// </summary>
