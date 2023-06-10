@@ -110,11 +110,6 @@ void ATimeManager::JobUpdate()
 					NPC->State = UState::Walking;
 					NPC->NPCAIController->MoveToActor(NPC->Career->Workstation, 0, true);
 				}
-				else if (NPC->Commuting && NPC->State != UState::Talking && NPC->GetVelocity().GetAbsMax() < 1)
-				{
-					NPC->NPCAIController->MoveToActor(NPC->Career->Workstation, 0, true);
-				}
-
 				else if (NPC->Career->EndTime.Hour == CurrentTime.Hour && NPC->Career->EndTime.Minute <= CurrentTime.Minute && NPC->AtWork)
 				{
 					NPC->AtWork = false;
@@ -127,6 +122,10 @@ void ATimeManager::JobUpdate()
 					NPC->Commuting = false;
 					NPC->State = UState::Working;
 					NPC->NPCAIController->StopMovement();
+				}
+				else if (NPC->Commuting && NPC->State != UState::Talking && NPC->GetVelocity().GetAbsMax() < 1)
+				{
+					NPC->NPCAIController->MoveToActor(NPC->Career->Workstation, 0, true);
 				}
 			}
 		}

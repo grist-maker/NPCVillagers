@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "BaseVillager.h"
 #include "DialogBank.h"
+#include "BaseVillager.h"
 
 // Sets default values for this component's properties
 UDialogBank::UDialogBank()

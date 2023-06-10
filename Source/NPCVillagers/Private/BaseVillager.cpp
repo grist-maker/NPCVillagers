@@ -63,6 +63,7 @@ void ABaseVillager::EndDialog()
 	else if (AtWork)
 	{
 		State = UState::Working;
+		SetActorRotation((Career->Workstation->GetActorLocation() - GetActorLocation()).Rotation());
 	}
 	else
 	{
