@@ -6,6 +6,8 @@
 #include "Math/UnrealMathUtility.h"
 #include "DialogBank.generated.h"
 
+class ABaseVillager;
+
 USTRUCT(BlueprintType)
 struct FFSubBank
 {
@@ -91,7 +93,28 @@ public:
 	/// The SelectResponse function governs the behavior of an NPC when the player chooses to talk to them.
 	/// </summary>
 	UFUNCTION(BlueprintCallable)
-	FString SelectResponse();
+	FString SelectRandomResponse();
+
+	UFUNCTION(BlueprintCallable)
+	FString SelectMoodResponse();
+
+	UFUNCTION(BlueprintCallable)
+	FString SelectEnergyResponse();
+
+	UFUNCTION(BlueprintCallable)
+		FString SelectRelationshipResponse();
+
+	UFUNCTION(BlueprintCallable)
+	FString SelectGenericResponse();
+
+	UFUNCTION(BlueprintCallable)
+	FString SelectWorkResponse();
+	
+	UFUNCTION(BlueprintCallable)
+		FString SelectCoworkerResponse();
+
+	UFUNCTION(BlueprintCallable)
+	FString CheckForOverride(ABaseVillager* Npc);
 	/// <summary>
 	/// The HurtReaction function governs the behavior of an NPC when the player chooses to hit them.
 	/// </summary>
