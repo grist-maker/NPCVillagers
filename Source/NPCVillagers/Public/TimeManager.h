@@ -40,6 +40,25 @@ public:
 	UWeekday CurrentDay = UWeekday::Monday;
 
 	/// <summary>
+	/// These keep track of the randomized mood updates occuring 3 times a day.
+	/// </summary>
+	bool MorningMoodUpdate = false;
+
+	bool NoonMoodUpdate = false;
+
+	bool EveningMoodUpdate = false;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FTimestamp MorningMoodTime;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FTimestamp NoonMoodTime;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FTimestamp EveningMoodTime;
+
+	FTimestamp NextMoodTime = MorningMoodTime;
+	/// <summary>
 	/// Used to periodically update the game-world time based on the passage of fixed intervals of real-world time.
 	/// </summary>
 	FTimerHandle SecondCounter;
@@ -81,4 +100,11 @@ private:
 	/// Progresses time by one minute, called over a fixed period.
 	/// </summary>
 	void NewMinute();
+
+	void CheckForMoodUpdate();
+
+	TArray<ABaseVillager*> SoftwareEngineers;
+	TArray<ABaseVillager*> Gardeners;
+	TArray<ABaseVillager*> Fishers;
+	TArray<ABaseVillager*> Merchants;
 };

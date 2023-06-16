@@ -20,6 +20,20 @@
 #include "DialogBank.h"
 #include "BaseVillager.generated.h"
 
+
+/*USTRUCT(BlueprintType)
+struct FEmotion
+{
+public:
+	GENERATED_BODY()
+		UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		UMood Mood;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		float* Amount;
+};*/
+
+
 UCLASS()
 class NPCVILLAGERS_API ABaseVillager : public ACharacter
 {
@@ -68,6 +82,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variables") //The physical state (what they're doing) of the NPC.
 	UState State;
 
+	UState PreviousState;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variables") //The emotional state of the NPC.
 	UMood Mood;
 
@@ -79,6 +95,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variables") //How many times the player has hit the NPC.
 	int PlayerHits;
+
 
 
 	/// <summary>
@@ -99,6 +116,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MoodVariables") //Represents the NPC's excitement level
 	float Excitement;
+
+	TArray<float*> MoodValues
+	{
+		&Happiness,
+		&Sadness,
+		&Anger,
+		&Fear,
+		&Excitement
+	};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MoodVariables") //Represents the NPC's happiness target.
 	class UObject* HappinessTarget;
@@ -186,7 +212,10 @@ public:
 	float BaseEnergyDrain = 0.2f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ChangeAmounts")
-		float HobbyEnergyDrain = 0.2f;
+	float HobbyEnergyDrain = 0.2f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ChangeAmounts")
+	float NegativeMoodEnergyDrain = 0.2f;
 
 	/// <summary>
 	/// Objective variables are used to dictate what the NPC is planning on doing next.
@@ -215,6 +244,16 @@ public:
 	/// This function updates the status of an NPC, adjusting their behavior based on current state and settings.
 	/// </summary>
 	void UpdateStatus();
+
+	bool RecoverEnergy();
+
+	void RelaxingMoodImprovement();
+
+	void UpdateMood();
+
+	void NegativeMoodHit(float MoodChange);
+
+	void PositiveMoodHit(float MoodChange);
 
 	void Talk();
 

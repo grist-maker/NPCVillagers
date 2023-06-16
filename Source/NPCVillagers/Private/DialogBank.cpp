@@ -48,6 +48,8 @@ FString UDialogBank::GiftReaction(FString GiftName)
 				{
 					Reaction = NpcJob->LikedGifts[FMath::RandRange(0, NpcJob->LikedGifts.Num() - 1)];
 				}
+				Npc->PositiveMoodHit(Npc->MoodGain * 2);
+				Npc->NegativeMoodHit(-Npc->MoodGain * 2);
 			}
 			else if (Npc->DislikedGifts.Contains(GiftName))
 			{
@@ -60,6 +62,8 @@ FString UDialogBank::GiftReaction(FString GiftName)
 				{
 					Reaction = NpcJob->DislikedGifts[FMath::RandRange(0, NpcJob->DislikedGifts.Num() - 1)];
 				}
+				Npc->PositiveMoodHit(-Npc->MoodGain *2);
+				Npc->NegativeMoodHit(Npc->MoodDrain * 2);
 			}
 			else
 			{
@@ -72,6 +76,8 @@ FString UDialogBank::GiftReaction(FString GiftName)
 				{
 					Reaction = NpcJob->MiddleGifts[FMath::RandRange(0, NpcJob->MiddleGifts.Num() - 1)];
 				}
+				Npc->PositiveMoodHit(Npc->MoodGain);
+				Npc->NegativeMoodHit(-Npc->MoodGain);
 			}
 			return Reaction;
 		}
@@ -96,6 +102,7 @@ FString UDialogBank::HurtReaction()
 		{
 			HurtResponse = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()))->HurtReactions[FMath::RandRange(0, Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()))->HurtReactions.Num() - 1)];
 		}
+		Npc->NegativeMoodHit(10);
 		return HurtResponse;
 	}
 	return "";
@@ -104,6 +111,15 @@ FString UDialogBank::HurtReaction()
 FString UDialogBank::CheckForOverride(ABaseVillager* Npc)
 {
 	UDialogBank* NpcJob = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()));
+
+	if (NpcJob != nullptr && Npc->NPCAIController != nullptr)
+	{
+		if (Npc->AtWork || Npc->Commuting)
+		{
+			Npc->PlayerAffinity -= Npc->TalkAffinity;
+			return NpcJob->BusyState[FMath::RandRange(0, NpcJob->BusyState.Num() - 1)];
+		}
+	}
 
 	int Response = 0;
 	if (Npc->Energy <= Npc->EnergyLevels[0])
@@ -157,6 +173,7 @@ FString UDialogBank::SelectMoodResponse()
 	{
 		Npc->Talk();
 		UDialogBank* NpcJob = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()));
+
 		FString OverrideCheck = CheckForOverride(Npc);
 		if (OverrideCheck != "")
 		{
@@ -196,6 +213,7 @@ FString UDialogBank::SelectEnergyResponse()
 		Npc->Talk();
 		int Response = 0;
 		UDialogBank* NpcJob = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()));
+
 		FString OverrideCheck = CheckForOverride(Npc);
 		if (OverrideCheck != "")
 		{
@@ -238,6 +256,7 @@ FString UDialogBank::SelectRelationshipResponse()
 		Npc->Talk();
 		int Response = 0;
 		UDialogBank* NpcJob = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()));
+
 		FString OverrideCheck = CheckForOverride(Npc);
 		if (OverrideCheck != "")
 		{
@@ -293,18 +312,12 @@ FString UDialogBank::SelectWorkResponse()
 	{
 		Npc->Talk();
 		UDialogBank* NpcJob = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()));
-		FString OverrideCheck = CheckForOverride(Npc);
-		if (OverrideCheck != "")
-		{
-			return OverrideCheck;
-		}
 		if (NpcJob != nullptr && Npc->NPCAIController != nullptr)
 		{
-
-			if (Npc->AtWork || Npc->Commuting)
+			FString OverrideCheck = CheckForOverride(Npc);
+			if (OverrideCheck != "")
 			{
-				Npc->PlayerAffinity -= Npc->TalkAffinity;
-				return NpcJob->BusyState[FMath::RandRange(0, NpcJob->BusyState.Num() - 1)];
+				return OverrideCheck;
 			}
 
 			if (Npc->Energy >= Npc->EnergyLevels[1])
@@ -361,17 +374,13 @@ FString UDialogBank::SelectGenericResponse()
 	if (Npc != nullptr)
 	{
 		Npc->Talk();
-		FString OverrideCheck = CheckForOverride(Npc);
-		if (OverrideCheck != "")
-		{
-			return OverrideCheck;
-		}
 		if (Npc != nullptr && Npc->NPCAIController != nullptr)
 		{
-			if (Npc->AtWork || Npc->Commuting)
+
+			FString OverrideCheck = CheckForOverride(Npc);
+			if (OverrideCheck != "")
 			{
-				Npc->PlayerAffinity -= Npc->TalkAffinity;
-				return BusyState[FMath::RandRange(0, BusyState.Num() - 1)];
+				return OverrideCheck;
 			}
 
 			if (Npc->Energy >= Npc->EnergyLevels[1])
@@ -424,7 +433,12 @@ FString UDialogBank::SelectGenericResponse()
 
 FString UDialogBank::SelectCoworkerResponse()
 {
-	Npc->Talk();
+	ABaseVillager* Npc = Cast<ABaseVillager>(GetOwner());
+
+	if (Npc != nullptr && Npc->Career != nullptr)
+	{
+		Npc->Talk();
+	}
 	return "";
 }
 
@@ -443,17 +457,6 @@ FString UDialogBank::SelectRandomResponse()
 		if (NpcJob != nullptr && Npc->NPCAIController != nullptr)
 		{
 			int Response = 0;
-
-			if (Npc->AtWork || Npc->Commuting)
-			{
-				Npc->PlayerAffinity -= Npc->TalkAffinity;
-				Response = FMath::RandRange(0, BusyState.Num() + NpcJob->BusyState.Num() - 2);
-				if (Response >= BusyState.Num())
-				{
-					return NpcJob->BusyState[Response - BusyState.Num()];
-				}
-				return BusyState[Response];
-			}
 
 			if (Npc->Energy >= Npc->EnergyLevels[1])
 			{

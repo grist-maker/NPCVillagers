@@ -7,6 +7,7 @@ void ATimeManager::BeginPlay()
 	Player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 
 	GetWorldTimerManager().SetTimer(SecondCounter, this, &ATimeManager::NewMinute, 0.2f, true, 0.2f);
+	NextMoodTime = MorningMoodTime;
 }
 
 void ATimeManager::NewMinute()
@@ -17,6 +18,52 @@ void ATimeManager::NewMinute()
 
 	ProgressTime(NewTime);
 	UpdateVillagers();
+
+	if (!MorningMoodUpdate || !NoonMoodUpdate || !EveningMoodUpdate)
+	{
+		CheckForMoodUpdate();
+	}
+}
+
+void ATimeManager::CheckForMoodUpdate()
+{
+	if (NextMoodTime.Hour <= CurrentTime.Hour && NextMoodTime.Minute < CurrentTime.Minute)
+	{
+		if (!MorningMoodUpdate)
+		{
+			MorningMoodUpdate = true;
+			NextMoodTime = NoonMoodTime;
+		}
+		else if (!NoonMoodUpdate)
+		{
+			NoonMoodUpdate = true;
+			NextMoodTime = EveningMoodTime;
+		}
+		else if (!EveningMoodUpdate)
+		{
+			EveningMoodUpdate = true;
+			NextMoodTime = MorningMoodTime;
+		}
+
+		for (int i = 0; i < Villagers.Num(); i++)
+		{
+			if (Villagers[i] != nullptr)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					int RandomMood = FMath::RandRange(0, 1);
+					if (RandomMood == 0)
+					{
+						Cast<ABaseVillager>(Villagers[i])->PositiveMoodHit(((j+1)%2 +1 *(-1 * j%2)) * 15);
+					}
+					else
+					{
+						Cast<ABaseVillager>(Villagers[i])->NegativeMoodHit(((j + 1) % 2 + 1 * (- 1 * j % 2)) * 15);
+					}
+				}
+			}
+		}
+	}
 }
 
 void ATimeManager::ProgressTime(FTimestamp& Progress)
@@ -45,6 +92,9 @@ void ATimeManager::ProgressTime(FTimestamp& Progress)
 		AdditionalDays = hourSum / 24;
 		CurrentTime.Hour = hourSum % 24;
 
+		MorningMoodUpdate = false;
+		NoonMoodUpdate = false;
+		EveningMoodUpdate = false;
 		for (int i = 0; i < Villagers.Num(); i++)
 		{
 			if (Villagers[i] != nullptr)
@@ -161,9 +211,22 @@ void ATimeManager::EnergyUpdate()
 				{
 					NPC->Energy += NPC->UnconsciousEnergyGain;
 				}
+				else if (NPC->Mood == UMood::Angry || NPC->Mood == UMood::Sad || NPC->Mood == UMood::Scared)
+				{
+					NPC->Energy -= NPC->NegativeMoodEnergyDrain;
+				}
 				else
 				{
 					NPC->Energy -= NPC->BaseEnergyDrain;
+				}
+
+				if (NPC->Energy >100)
+				{
+					NPC->Energy = 100;
+				}
+				else if (NPC->Energy <= 0)
+				{
+					NPC->Energy = 0;
 				}
 				NPC->UpdateStatus();
 			}

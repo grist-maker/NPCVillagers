@@ -11,10 +11,10 @@
 UENUM(BlueprintType)
 enum class UMood : uint8
 {
-	Happy,
-	Sad,
-	Angry,
-	Scared,
-	Excited
+	Happy = 0,
+	Sad = 1,
+	Angry = 2,
+	Scared = 3,
+	Excited = 4
 };
  

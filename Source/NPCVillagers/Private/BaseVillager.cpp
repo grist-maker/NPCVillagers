@@ -25,8 +25,8 @@ void ABaseVillager::BeginPlay()
 void ABaseVillager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (!Commuting && !AtWork && State != UState::Talking)
+	UpdateMood();
+	if (State == UState::Idle || State == UState::Walking)
 	{
 		if (GetVelocity() == FVector{ 0, 0, 0 })
 		{
@@ -39,16 +39,147 @@ void ABaseVillager::Tick(float DeltaTime)
 	}
 }
 
+void ABaseVillager::UpdateMood()
+{
+	for (int i = 0; i < MoodValues.Num(); i++)
+	{
+		if (*MoodValues[i] < 0)
+		{
+			*MoodValues[i] = 0;
+		}
+		else if (*MoodValues[i] > 100)
+		{
+			*MoodValues[i] = 100;
+		}
+	}
+
+	int j = 0;
+	float LargestValue = 0;
+	for (int i = 0; i < MoodValues.Num(); i++)
+	{
+		if (LargestValue < *MoodValues[i])
+		{
+			LargestValue = *MoodValues[i];
+			j = i;
+		}
+	}
+	Mood = static_cast<UMood>(j);
+}
+
+void ABaseVillager::NegativeMoodHit(float MoodChange)
+{
+	auto NewValue = FMath::RandRange(0, 100);
+	if (NewValue <= NegativeMoodPercent)
+	{
+		*MoodValues[static_cast<uint8>(NegativePreference)] += MoodChange;
+	}
+	//Negative moods use the integer values 1 2 and 3.
+	else
+	{
+		if (NewValue > (100 - NegativeMoodPercent) / 2)
+		{
+			if (static_cast<uint8>(NegativePreference) != 1)
+			{
+				*MoodValues[1] += MoodChange;
+			}
+			else
+			{
+				*MoodValues[2] += MoodChange;
+			}
+		}
+		else
+		{
+			if (static_cast<uint8>(NegativePreference) == 3)
+			{
+				*MoodValues[2] += MoodChange;
+			}
+			else
+			{
+				*MoodValues[3] += MoodChange;
+			}
+		}
+	}
+}
+
+void ABaseVillager::PositiveMoodHit(float MoodChange)
+{
+	auto NewValue = FMath::RandRange(0, 100);
+	if (NewValue <= PositiveMoodPercent)
+	{
+		*MoodValues[static_cast<uint8>(PositivePreference)]+=MoodChange;
+	}
+	else
+	{
+		if (PositivePreference == UMood::Happy)
+		{
+			Excitement += MoodChange;
+		}
+		else
+		{
+			Happiness += MoodChange;
+		}
+	}
+}
+
+
 void ABaseVillager::Talk()
 {
+	PreviousState = State;
 	State = UState::Talking;
 	NPCAIController->StopMovement();
 	SetActorRotation((PlayerPawn->GetActorLocation() - GetActorLocation()).Rotation());
 }
 
+bool ABaseVillager::RecoverEnergy()
+{
+	if (Energy < 10)
+	{
+		NPCAIController->StopMovement();
+		State = UState::Unconscious;
+		return true;
+	}
+	else if (Energy < EnergyLevels[0] && !AtWork)
+	{
+		NPCAIController->StopMovement();
+		State = UState::Relaxing;
+		return true;
+	}
+	else if (Energy >= EnergyLevels[1] && State != UState::Asleep)
+	{
+		if (AtWork)
+		{
+			State = UState::Working;
+		}
+		else
+		{
+			State = UState::Idle;
+		}
+		return false;
+	}
+	else if (State == UState::Relaxing || State == UState::Asleep || State == UState::Unconscious)
+	{
+		return true;
+	}
+	return false;
+}
+
+void ABaseVillager::RelaxingMoodImprovement()
+{
+	if (static_cast<uint8>(Mood) != 0)
+	{
+		*MoodValues[static_cast<uint8>(Mood)] -= MoodDrain/10;
+		*MoodValues[static_cast<uint8>(PositivePreference)] += MoodGain / 10;
+	}
+}
+
 void ABaseVillager::UpdateStatus()
 {
-	if (PlayerPawn != nullptr && NPCAIController != nullptr && !Commuting && !AtWork && State != UState::Talking)
+	if (RecoverEnergy())
+	{
+		RelaxingMoodImprovement();
+	}
+
+	if (PlayerPawn != nullptr && NPCAIController != nullptr && !Commuting && (State == UState::Walking || State == UState::Idle) )
 	{
 		NPCAIController->MoveToActor(PlayerPawn, 100, true);
 	}
@@ -56,18 +187,10 @@ void ABaseVillager::UpdateStatus()
 
 void ABaseVillager::EndDialog()
 {
-	if (Commuting)
+	State = PreviousState;
+	if (State == UState::Working)
 	{
-		State = UState::Walking;
-	}
-	else if (AtWork)
-	{
-		State = UState::Working;
 		SetActorRotation((Career->Workstation->GetActorLocation() - GetActorLocation()).Rotation());
-	}
-	else
-	{
-		State = UState::Idle;
 	}
 }
 
@@ -76,4 +199,3 @@ void ABaseVillager::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
-
