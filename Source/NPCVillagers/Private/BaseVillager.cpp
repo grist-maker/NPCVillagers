@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "..\Public\BaseVillager.h"
 #include "GameFramework/Pawn.h"
+#include "PlayerVillager.h"
 #include "GameFramework/Controller.h"
 
 // Sets default values
@@ -25,6 +26,10 @@ void ABaseVillager::BeginPlay()
 void ABaseVillager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if ((Cast<APlayerVillager>(PlayerPawn) && Cast<APlayerVillager>(PlayerPawn)->InteractedNPC != nullptr && Cast<APlayerVillager>(PlayerPawn)->InteractedNPC->Name == Name) && !AtWork)
+	{
+		SetActorRotation((PlayerPawn->GetActorLocation() - GetActorLocation()).Rotation());
+	}
 	UpdateMood();
 	if (State == UState::Idle || State == UState::Walking)
 	{
@@ -144,7 +149,7 @@ bool ABaseVillager::RecoverEnergy()
 		State = UState::Relaxing;
 		return true;
 	}
-	else if (Energy >= EnergyLevels[1] && State != UState::Asleep)
+	else if (Energy >= EnergyLevels[1])
 	{
 		if (AtWork)
 		{
@@ -174,20 +179,45 @@ void ABaseVillager::RelaxingMoodImprovement()
 
 void ABaseVillager::UpdateStatus()
 {
-	if (RecoverEnergy())
+	if (State != UState::Talking && State != UState::Asleep && RecoverEnergy())
 	{
 		RelaxingMoodImprovement();
 	}
 
-	if (PlayerPawn != nullptr && NPCAIController != nullptr && !Commuting && (State == UState::Walking || State == UState::Idle) )
+	if (PlayerPawn != nullptr && NPCAIController != nullptr && !Commuting && (State == UState::Idle))
 	{
-		NPCAIController->MoveToActor(PlayerPawn, 100, true);
+		if (!GetWorldTimerManager().IsTimerActive(IdleTimer))
+		{
+			if (!(Cast<APlayerVillager>(PlayerPawn) && Cast<APlayerVillager>(PlayerPawn)->InteractedNPC != nullptr && Cast<APlayerVillager>(PlayerPawn)->InteractedNPC->Name == Name))
+			{
+				GetWorldTimerManager().SetTimer(IdleTimer, this, &ABaseVillager::IdleLoafing, IdleSeconds, false);
+			}
+		}
+	}
+	else if(GetWorldTimerManager().IsTimerActive(IdleTimer))
+	{
+		GetWorldTimerManager().ClearTimer(IdleTimer);
+	}
+}
+
+void ABaseVillager::IdleLoafing()
+{
+	if (!(Cast<APlayerVillager>(PlayerPawn) && Cast<APlayerVillager>(PlayerPawn)->InteractedNPC != nullptr && Cast<APlayerVillager>(PlayerPawn)->InteractedNPC->Name == Name))
+	{
+		UNavigationSystemV1* NavigationSystem = UNavigationSystemV1::GetCurrent(GetWorld());
+		FNavLocation Point;
+		bool success = NavigationSystem->GetRandomReachablePointInRadius(GetActorLocation(), IdleRadius, Point);
+		if (success)
+		{
+			NPCAIController->MoveToLocation(Point);
+		}
 	}
 }
 
 void ABaseVillager::EndDialog()
 {
 	State = PreviousState;
+
 	if (State == UState::Working)
 	{
 		SetActorRotation((Career->Workstation->GetActorLocation() - GetActorLocation()).Rotation());

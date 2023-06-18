@@ -76,6 +76,19 @@ public:
 	/// </summary>
 	void JobUpdate();
 
+	TArray<ABaseVillager*> SoftwareEngineers;
+	TArray<ABaseVillager*> Gardeners;
+	TArray<ABaseVillager*> Fishers;
+	TArray<ABaseVillager*> Merchants;
+
+	TArray<TArray<ABaseVillager*>*> Coworkers
+	{
+		&SoftwareEngineers,
+		&Gardeners,
+		&Fishers,
+		&Merchants
+	};
+
 private:
 	/// <summary>
 	/// Updates the energy and Job status of each villager in the scene.
@@ -102,9 +115,4 @@ private:
 	void NewMinute();
 
 	void CheckForMoodUpdate();
-
-	TArray<ABaseVillager*> SoftwareEngineers;
-	TArray<ABaseVillager*> Gardeners;
-	TArray<ABaseVillager*> Fishers;
-	TArray<ABaseVillager*> Merchants;
 };

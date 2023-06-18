@@ -7,6 +7,7 @@
 #include "DialogBank.generated.h"
 
 class ABaseVillager;
+class ATimeManager;
 
 USTRUCT(BlueprintType)
 struct FFSubBank
@@ -26,6 +27,8 @@ class NPCVILLAGERS_API UDialogBank : public UActorComponent
 	GENERATED_BODY()
 
 public:	
+
+	ATimeManager* WorldManager;
 	/// <summary>
 	/// These are the Affinity sub banks. One is active at a time, corresponding to the current player-affinity level of the NPC and their meter settings.
 	/// </summary>
@@ -83,6 +86,15 @@ public:
 	TArray<FString> DislikedGifts;
 
 	/// <summary>
+	/// This is the coworker sub-bank, used to provide default responses about their coworkers.
+	/// </summary>
+	UPROPERTY(EditAnywhere)
+	TArray<FString> Coworker;
+	
+	UPROPERTY(EditAnywhere)
+	TArray<FString> HurtCoworker;
+
+	/// <summary>
 	/// This is an array used to store potential responses as they are randomly chosen from sub-banks.
 	/// </summary>
 	TArray<FString> ChosenResponses;
@@ -96,13 +108,13 @@ public:
 	FString SelectRandomResponse();
 
 	UFUNCTION(BlueprintCallable)
-	FString SelectMoodResponse();
+	FString SelectMoodResponse(bool AdjustStats = true);
 
 	UFUNCTION(BlueprintCallable)
-	FString SelectEnergyResponse();
+	FString SelectEnergyResponse(bool AdjustStats = true);
 
 	UFUNCTION(BlueprintCallable)
-		FString SelectRelationshipResponse();
+		FString SelectRelationshipResponse(bool AdjustStats = true);
 
 	UFUNCTION(BlueprintCallable)
 	FString SelectGenericResponse();
@@ -111,7 +123,7 @@ public:
 	FString SelectWorkResponse();
 	
 	UFUNCTION(BlueprintCallable)
-		FString SelectCoworkerResponse();
+	FString SelectCoworkerResponse(bool& HitCoworker, bool AdjustStats = true);
 
 	UFUNCTION(BlueprintCallable)
 	FString CheckForOverride(ABaseVillager* Npc);

@@ -4,6 +4,35 @@
 void ATimeManager::BeginPlay()
 {
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABaseVillager::StaticClass(), Villagers);
+
+	for (int i = 0; i < Villagers.Num(); i++)
+	{
+		auto NewVillager = Cast<ABaseVillager>(Villagers[i]);
+		if (NewVillager != nullptr)
+		{
+			auto Career = NewVillager->Career;
+			if (Career != nullptr)
+			{
+				if (Career->JobTitle == "Software Engineer")
+				{
+					SoftwareEngineers.Add(NewVillager);
+					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Coworker added"));
+				}
+				else if (Career->JobTitle == "Gardener")
+				{
+					Gardeners.Add(NewVillager);
+				}
+				else if (Career->JobTitle == "Merchant")
+				{
+					Merchants.Add(NewVillager);
+				}
+				else if(Career->JobTitle == "Fisher")
+				{
+					Fishers.Add(NewVillager);
+				}
+			}
+		}
+	}
 	Player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 
 	GetWorldTimerManager().SetTimer(SecondCounter, this, &ATimeManager::NewMinute, 0.2f, true, 0.2f);
@@ -157,7 +186,6 @@ void ATimeManager::JobUpdate()
 				if (NPC->Career->CommuteTime.Hour <= CurrentTime.Hour && NPC->Career->CommuteTime.Minute <= CurrentTime.Minute && !NPC->Commuting && !NPC->AtWork && NPC->Career->Days.Contains(CurrentDay) && (NPC->Career->EndTime.Hour >= CurrentTime.Hour))
 				{
 					NPC->Commuting = true;
-					NPC->State = UState::Walking;
 					NPC->NPCAIController->MoveToActor(NPC->Career->Workstation, 0, true);
 				}
 				else if (NPC->Career->EndTime.Hour == CurrentTime.Hour && NPC->Career->EndTime.Minute <= CurrentTime.Minute && NPC->AtWork)

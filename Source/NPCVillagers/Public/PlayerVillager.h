@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "BaseVillager.h"
 #include "PlayerVillager.generated.h"
 
 UCLASS()
@@ -33,6 +34,9 @@ public:
 	/// </summary>
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Viewport;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	ABaseVillager* InteractedNPC;
 
 protected:
 	// Called when the game starts or when spawned

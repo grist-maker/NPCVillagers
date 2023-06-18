@@ -22,6 +22,7 @@ public:
 	/// <summary>
 	/// The name of the Job that the NPC has.
 	/// </summary>
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString JobTitle;
 
 	/// <summary>

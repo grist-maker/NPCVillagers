@@ -18,6 +18,8 @@
 #include "Job.h"
 #include "GameFramework/PlayerController.h"
 #include "DialogBank.h"
+#include "NavigationSystem.h"
+#include "AbstractNavData.h"
 #include "BaseVillager.generated.h"
 
 
@@ -257,6 +259,12 @@ public:
 
 	void Talk();
 
+	void IdleLoafing();
+
+	FTimerHandle IdleTimer;
+
+	float IdleSeconds = 4.0f;
+	float IdleRadius = 1000;
 	/// <summary>
 	/// This function wraps up conversation with the NPC by returning them to their previous state.
 	/// </summary>
