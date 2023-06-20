@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Math/UnrealMathUtility.h"
+#include "GameFramework/Character.h"
 #include "DialogBank.generated.h"
 
 class ABaseVillager;
@@ -39,6 +40,13 @@ public:
 	UPROPERTY(EditAnywhere)
 	TArray<FString> LowAffinity;
 
+	TArray<TArray<FString>*> Affinity
+	{
+		&LowAffinity,
+		&MidAffinity,
+		&HighAffinity
+	};
+
 	/// <summary>
 	/// These are the Energy sub banks. One is active at a time, corresponding to the current energy level of the NPC and their meter settings.
 	/// </summary>
@@ -48,6 +56,13 @@ public:
 	TArray<FString> MidEnergy;
 	UPROPERTY(EditAnywhere)
 	TArray<FString> LowEnergy;
+
+	TArray<TArray<FString>*> Energy
+	{
+		&LowEnergy,
+		&MidEnergy,
+		&HighEnergy
+	};
 
 	/// <summary>
 	/// These are the Mood sub banks. One is active at a time, corresponding to the current mood of the NPC.
@@ -62,6 +77,15 @@ public:
 	TArray<FString> ExcitedMood;
 	UPROPERTY(EditAnywhere)
 	TArray<FString> ScaredMood;
+
+	TArray<TArray<FString>*> Moods
+	{
+		&HappyMood,
+		&SadMood,
+		&AngryMood,
+		&ScaredMood,
+		&ExcitedMood
+	};
 
 	/// <summary>
 	/// /This is the Busy sub bank, activated when the player tries to converse with an NPC that is currently working.
@@ -84,6 +108,12 @@ public:
 	TArray<FString> MiddleGifts;
 	UPROPERTY(EditAnywhere)
 	TArray<FString> DislikedGifts;
+	TArray<TArray<FString>*> GiftResponses
+	{
+		&DislikedGifts,
+		&MiddleGifts,
+		&LikedGifts
+	};
 
 	/// <summary>
 	/// This is the coworker sub-bank, used to provide default responses about their coworkers.
@@ -93,6 +123,12 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	TArray<FString> HurtCoworker;
+
+	TArray<TArray<FString>*> CoworkerResponses
+	{
+		&Coworker,
+		&HurtCoworker
+	};
 
 	/// <summary>
 	/// This is an array used to store potential responses as they are randomly chosen from sub-banks.
@@ -108,13 +144,13 @@ public:
 	FString SelectRandomResponse();
 
 	UFUNCTION(BlueprintCallable)
-	FString SelectMoodResponse(bool AdjustStats = true);
+	FString SelectMoodResponse(bool AdjustStats = true, bool IncludePersonality = true, bool IncludeJob = true);
 
 	UFUNCTION(BlueprintCallable)
-	FString SelectEnergyResponse(bool AdjustStats = true);
+	FString SelectEnergyResponse(bool AdjustStats = true, bool IncludePersonality = true, bool IncludeJob = true);
 
 	UFUNCTION(BlueprintCallable)
-		FString SelectRelationshipResponse(bool AdjustStats = true);
+		FString SelectRelationshipResponse(bool AdjustStats = true, bool IncludePersonality = true, bool IncludeJob = true);
 
 	UFUNCTION(BlueprintCallable)
 	FString SelectGenericResponse();
@@ -123,7 +159,7 @@ public:
 	FString SelectWorkResponse();
 	
 	UFUNCTION(BlueprintCallable)
-	FString SelectCoworkerResponse(bool& HitCoworker, bool AdjustStats = true);
+	FString SelectCoworkerResponse(bool& HitCoworker, bool AdjustStats = true, bool IncludePersonality = true, bool IncludeJob = true);
 
 	UFUNCTION(BlueprintCallable)
 	FString CheckForOverride(ABaseVillager* Npc);

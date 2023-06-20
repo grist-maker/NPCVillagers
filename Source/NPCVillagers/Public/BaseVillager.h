@@ -22,20 +22,6 @@
 #include "AbstractNavData.h"
 #include "BaseVillager.generated.h"
 
-
-/*USTRUCT(BlueprintType)
-struct FEmotion
-{
-public:
-	GENERATED_BODY()
-		UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		UMood Mood;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		float* Amount;
-};*/
-
-
 UCLASS()
 class NPCVILLAGERS_API ABaseVillager : public ACharacter
 {
@@ -64,7 +50,7 @@ public:
 	/// blocks can be used to build up different NPCs. They may be unique per NPC, or reused between them.
 	/// </summary>
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blocks")
-	TArray<UHobby> Hobbies;
+	TArray<AHobby*> Hobbies;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blocks")
 	TArray<FString>LikedGifts;
@@ -260,6 +246,10 @@ public:
 	void Talk();
 
 	void IdleLoafing();
+
+	void UpdateAffinity();
+
+	void UpdateEnergy();
 
 	FTimerHandle IdleTimer;
 

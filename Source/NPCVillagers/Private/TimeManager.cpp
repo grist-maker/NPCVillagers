@@ -186,6 +186,7 @@ void ATimeManager::JobUpdate()
 				if (NPC->Career->CommuteTime.Hour <= CurrentTime.Hour && NPC->Career->CommuteTime.Minute <= CurrentTime.Minute && !NPC->Commuting && !NPC->AtWork && NPC->Career->Days.Contains(CurrentDay) && (NPC->Career->EndTime.Hour >= CurrentTime.Hour))
 				{
 					NPC->Commuting = true;
+					NPC->State = UState::Walking;
 					NPC->NPCAIController->MoveToActor(NPC->Career->Workstation, 0, true);
 				}
 				else if (NPC->Career->EndTime.Hour == CurrentTime.Hour && NPC->Career->EndTime.Minute <= CurrentTime.Minute && NPC->AtWork)
@@ -246,15 +247,6 @@ void ATimeManager::EnergyUpdate()
 				else
 				{
 					NPC->Energy -= NPC->BaseEnergyDrain;
-				}
-
-				if (NPC->Energy >100)
-				{
-					NPC->Energy = 100;
-				}
-				else if (NPC->Energy <= 0)
-				{
-					NPC->Energy = 0;
 				}
 				NPC->UpdateStatus();
 			}

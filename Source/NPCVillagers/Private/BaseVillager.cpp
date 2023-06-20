@@ -30,7 +30,6 @@ void ABaseVillager::Tick(float DeltaTime)
 	{
 		SetActorRotation((PlayerPawn->GetActorLocation() - GetActorLocation()).Rotation());
 	}
-	UpdateMood();
 	if (State == UState::Idle || State == UState::Walking)
 	{
 		if (GetVelocity() == FVector{ 0, 0, 0 })
@@ -71,6 +70,30 @@ void ABaseVillager::UpdateMood()
 	Mood = static_cast<UMood>(j);
 }
 
+void ABaseVillager::UpdateAffinity()
+{
+	if (PlayerAffinity < 0)
+	{
+		PlayerAffinity = 0;
+	}
+	else if (PlayerAffinity > 100)
+	{
+		PlayerAffinity = 100;
+	}
+}
+
+void ABaseVillager::UpdateEnergy()
+{
+	if (Energy < 0)
+	{
+		Energy = 0;
+	}
+	else if (Energy > 100)
+	{
+		Energy = 100;
+	}
+}
+
 void ABaseVillager::NegativeMoodHit(float MoodChange)
 {
 	auto NewValue = FMath::RandRange(0, 100);
@@ -81,29 +104,14 @@ void ABaseVillager::NegativeMoodHit(float MoodChange)
 	//Negative moods use the integer values 1 2 and 3.
 	else
 	{
-		if (NewValue > (100 - NegativeMoodPercent) / 2)
+		int RandomMood = FMath::RandRange(1, 3);
+		while (RandomMood == static_cast<uint8>(NegativePreference))
 		{
-			if (static_cast<uint8>(NegativePreference) != 1)
-			{
-				*MoodValues[1] += MoodChange;
-			}
-			else
-			{
-				*MoodValues[2] += MoodChange;
-			}
+			RandomMood = FMath::RandRange(1, 3);
 		}
-		else
-		{
-			if (static_cast<uint8>(NegativePreference) == 3)
-			{
-				*MoodValues[2] += MoodChange;
-			}
-			else
-			{
-				*MoodValues[3] += MoodChange;
-			}
-		}
+		*MoodValues[RandomMood] += MoodChange;
 	}
+	UpdateMood();
 }
 
 void ABaseVillager::PositiveMoodHit(float MoodChange)
@@ -124,6 +132,7 @@ void ABaseVillager::PositiveMoodHit(float MoodChange)
 			Happiness += MoodChange;
 		}
 	}
+	UpdateMood();
 }
 
 
@@ -174,6 +183,7 @@ void ABaseVillager::RelaxingMoodImprovement()
 	{
 		*MoodValues[static_cast<uint8>(Mood)] -= MoodDrain/10;
 		*MoodValues[static_cast<uint8>(PositivePreference)] += MoodGain / 10;
+		UpdateMood();
 	}
 }
 
@@ -198,6 +208,7 @@ void ABaseVillager::UpdateStatus()
 	{
 		GetWorldTimerManager().ClearTimer(IdleTimer);
 	}
+	UpdateEnergy();
 }
 
 void ABaseVillager::IdleLoafing()
@@ -216,11 +227,14 @@ void ABaseVillager::IdleLoafing()
 
 void ABaseVillager::EndDialog()
 {
-	State = PreviousState;
-
-	if (State == UState::Working)
+	if (State != UState::Unconscious)
 	{
-		SetActorRotation((Career->Workstation->GetActorLocation() - GetActorLocation()).Rotation());
+		State = PreviousState;
+
+		if (State == UState::Working)
+		{
+			SetActorRotation((Career->Workstation->GetActorLocation() - GetActorLocation()).Rotation());
+		}
 	}
 }
 
