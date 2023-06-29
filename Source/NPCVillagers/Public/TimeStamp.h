@@ -24,4 +24,82 @@ public:
 	/// </summary>
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int Minute = 0;
+
+	FTimestamp operator=(FTimestamp NewTimestamp)
+	{
+		Hour = NewTimestamp.Hour;
+		Minute = NewTimestamp.Minute;
+		return *this;
+	}
+
+	bool operator==(FTimestamp RHSTimestamp)
+	{
+		return (Hour == RHSTimestamp.Hour && Minute == RHSTimestamp.Minute);
+	}
+
+	FTimestamp operator+(FTimestamp RHSTimestamp)
+	{
+		int newHours = 0;
+		int NewMinutes = Minute + RHSTimestamp.Minute;
+		if (NewMinutes >= 60)
+		{
+			newHours = NewMinutes / 60;
+			NewMinutes = NewMinutes % 60;
+		}
+		newHours += (Hour + RHSTimestamp.Hour);
+		FTimestamp newTimestamp{ newHours, NewMinutes };
+	
+		return newTimestamp;
+	}
+
+	FTimestamp operator-(FTimestamp RHSTimestamp)
+	{
+		int newHours = 0;
+		int NewMinutes = Minute - RHSTimestamp.Minute;
+		if (NewMinutes <= 0)
+		{
+			newHours = Hour - (NewMinutes / 60);
+			NewMinutes = (NewMinutes % 60);
+			if (NewMinutes < 0)
+			{
+				NewMinutes += ((-NewMinutes / 60)+1)*60;
+			}
+		}
+		newHours -= RHSTimestamp.Hour;
+		FTimestamp newTimestamp{ newHours, NewMinutes };
+
+		return newTimestamp;
+	}
+
+	bool operator<(FTimestamp RHSTimestamp)
+	{
+		if (RHSTimestamp.Hour > Hour)
+		{
+			return true;
+		}
+		if (RHSTimestamp.Hour == Hour)
+		{
+			if (RHSTimestamp.Minute < Minute)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool operator>(FTimestamp RHSTimestamp)
+	{
+		 if (Hour > RHSTimestamp.Hour)
+		 {
+			return true;
+		 }
+		if (RHSTimestamp.Hour == Hour)
+		{
+			if (Minute > RHSTimestamp.Minute)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 };

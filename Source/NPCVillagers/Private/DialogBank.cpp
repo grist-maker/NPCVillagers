@@ -98,6 +98,7 @@ FString UDialogBank::HurtReaction()
 			HurtResponse = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()))->HurtReactions[FMath::RandRange(0, Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()))->HurtReactions.Num() - 1)];
 		}
 		Npc->NegativeMoodHit(10);
+		Npc->PositiveMoodHit(-10);
 		Npc->UpdateAffinity();
 		return HurtResponse;
 	}

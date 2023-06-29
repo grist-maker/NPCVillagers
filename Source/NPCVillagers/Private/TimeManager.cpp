@@ -100,26 +100,16 @@ void ATimeManager::ProgressTime(FTimestamp& Progress)
 	int AdditionalHours = 0;
 	int AdditionalDays = 0;
 
-	if (CurrentTime.Minute + Progress.Minute < 60)
+	auto NewTime = Progress + CurrentTime;
+	CurrentTime.Minute = NewTime.Minute;
+	if(NewTime.Hour < 24)
 	{
-		CurrentTime.Minute += Progress.Minute;
+		CurrentTime = NewTime;
 	}
 	else
 	{
-		int minuteSum = CurrentTime.Minute + Progress.Minute;
-		AdditionalHours = minuteSum / 60;
-		CurrentTime.Minute = minuteSum % 60;
-	}
-
-	if (CurrentTime.Hour + Progress.Hour + AdditionalHours < 24)
-	{
-		CurrentTime.Hour += (AdditionalHours + Progress.Hour);
-	}
-	else
-	{
-		int hourSum = CurrentTime.Hour + Progress.Hour + AdditionalHours;
-		AdditionalDays = hourSum / 24;
-		CurrentTime.Hour = hourSum % 24;
+		AdditionalDays = NewTime.Hour / 24;
+		CurrentTime.Hour = NewTime.Hour % 24;
 
 		MorningMoodUpdate = false;
 		NoonMoodUpdate = false;
@@ -181,32 +171,7 @@ void ATimeManager::JobUpdate()
 		if (Villagers[i] != nullptr)
 		{
 			ABaseVillager* NPC = Cast<ABaseVillager>(Villagers[i]);
-			if (NPC != nullptr && NPC->State != UState::Talking && !NPC->DoneWork && NPC->Career != nullptr)
-			{
-				if (NPC->Career->CommuteTime.Hour <= CurrentTime.Hour && NPC->Career->CommuteTime.Minute <= CurrentTime.Minute && !NPC->Commuting && !NPC->AtWork && NPC->Career->Days.Contains(CurrentDay) && (NPC->Career->EndTime.Hour >= CurrentTime.Hour))
-				{
-					NPC->Commuting = true;
-					NPC->State = UState::Walking;
-					NPC->NPCAIController->MoveToActor(NPC->Career->Workstation, 0, true);
-				}
-				else if (NPC->Career->EndTime.Hour == CurrentTime.Hour && NPC->Career->EndTime.Minute <= CurrentTime.Minute && NPC->AtWork)
-				{
-					NPC->AtWork = false;
-					NPC->DoneWork = true;
-					NPC->State = UState::Idle;
-				}
-				else if (NPC->Commuting && NPC->IsOverlappingActor(NPC->Career->Workstation))
-				{
-					NPC->AtWork = true;
-					NPC->Commuting = false;
-					NPC->State = UState::Working;
-					NPC->NPCAIController->StopMovement();
-				}
-				else if (NPC->Commuting && NPC->State != UState::Talking && NPC->GetVelocity().GetAbsMax() < 1)
-				{
-					NPC->NPCAIController->MoveToActor(NPC->Career->Workstation, 0, true);
-				}
-			}
+			NPC->CheckOnJob(CurrentDay);
 		}
 	}
 }
@@ -220,35 +185,8 @@ void ATimeManager::EnergyUpdate()
 			ABaseVillager* NPC = Cast<ABaseVillager>(Villagers[i]);
 			if (NPC != nullptr)
 			{
-				if (NPC->State == UState::Working)
-				{
-					NPC->Energy -= NPC->JobEnergyDrain;
-				}
-				else if (NPC->State == UState::Hobby)
-				{
-					NPC->Energy -= NPC->HobbyEnergyDrain;
-				}
-				else if (NPC->State == UState::Relaxing)
-				{
-					NPC->Energy += NPC->RelaxEnergyGain;
-				}
-				else if (NPC->State == UState::Asleep)
-				{
-					NPC->Energy += NPC->SleepEnergyGain;
-				}
-				else if (NPC->State == UState::Unconscious)
-				{
-					NPC->Energy += NPC->UnconsciousEnergyGain;
-				}
-				else if (NPC->Mood == UMood::Angry || NPC->Mood == UMood::Sad || NPC->Mood == UMood::Scared)
-				{
-					NPC->Energy -= NPC->NegativeMoodEnergyDrain;
-				}
-				else
-				{
-					NPC->Energy -= NPC->BaseEnergyDrain;
-				}
 				NPC->UpdateStatus();
+				NPC->CurrentTime = CurrentTime;
 			}
 		}
 	}

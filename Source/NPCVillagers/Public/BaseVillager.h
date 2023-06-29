@@ -20,6 +20,7 @@
 #include "DialogBank.h"
 #include "NavigationSystem.h"
 #include "AbstractNavData.h"
+#include "Misc/FileHelper.h"
 #include "BaseVillager.generated.h"
 
 UCLASS()
@@ -194,16 +195,16 @@ public:
 	float SleepEnergyGain = 0.2f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ChangeAmounts")
-	float JobEnergyDrain = 0.2f;
+	float JobEnergyDrain = -0.2f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ChangeAmounts")
-	float BaseEnergyDrain = 0.2f;
+	float BaseEnergyDrain = -0.2f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ChangeAmounts")
-	float HobbyEnergyDrain = 0.2f;
+	float HobbyEnergyDrain =- 0.2f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ChangeAmounts")
-	float NegativeMoodEnergyDrain = 0.2f;
+	float NegativeMoodEnergyDrain = -0.2f;
 
 	/// <summary>
 	/// Objective variables are used to dictate what the NPC is planning on doing next.
@@ -228,6 +229,41 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void WorkingBehaviors();
+	void WalkingBehaviors();
+	void TalkingBehaviors();
+	void IdleBehaviors();
+	void HobbyBehaviors();
+	void RelaxingBehaviors();
+	void UnconsciousBehaviors();
+	void AsleepBehaviors();
+	
+	typedef void (ABaseVillager::*StateBehaviors)(void);
+	StateBehaviors Behaviors[8]
+	{
+		&ABaseVillager::WorkingBehaviors,
+		&ABaseVillager::WalkingBehaviors,
+		&ABaseVillager::TalkingBehaviors,
+		&ABaseVillager::IdleBehaviors,
+		&ABaseVillager::HobbyBehaviors,
+		&ABaseVillager::RelaxingBehaviors,
+		&ABaseVillager::UnconsciousBehaviors,
+		&ABaseVillager::AsleepBehaviors
+	};
+
+	float* EnergyChange[8]
+	{
+		&JobEnergyDrain,
+		&BaseEnergyDrain,
+		&BaseEnergyDrain,
+		&BaseEnergyDrain,
+		&HobbyEnergyDrain,
+		&RelaxEnergyGain,
+		&UnconsciousEnergyGain,
+		&SleepEnergyGain
+	};
+
+	void UpdateEnergy(bool UpdateLevels);
 	/// <summary>
 	/// This function updates the status of an NPC, adjusting their behavior based on current state and settings.
 	/// </summary>
@@ -249,12 +285,31 @@ public:
 
 	void UpdateAffinity();
 
-	void UpdateEnergy();
+	bool AttemptHobbySelection();
+
+	void CheckOnJob(const UWeekday& CurrentDay);
 
 	FTimerHandle IdleTimer;
 
+	FTimestamp CurrentTime;
+
+	int TargetHobby = Hobbies.Num();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString CurrentHobby = "";
+
 	float IdleSeconds = 4.0f;
 	float IdleRadius = 1000;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueFile")
+	bool UseDialogueFile = false;
+
+	bool TravelingToHobby = false;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueFile")
+	//TCHAR FilePath;
+
+
+	void FindSubBank(FString& StringValue, TArray<FString>* CurrentSubBank);
 	/// <summary>
 	/// This function wraps up conversation with the NPC by returning them to their previous state.
 	/// </summary>
