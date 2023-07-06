@@ -33,14 +33,20 @@ void APlayerVillager::Tick(float DeltaTime)
 
 void APlayerVillager::MoveForward(float Amount)
 {
-	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
-	AddMovementInput(Direction, Amount);
+	if (!(CurrentHobby != nullptr && CurrentHobby->PlayerPerforming))
+	{
+		FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
+		AddMovementInput(Direction, Amount);
+	}
 }
 
 void APlayerVillager::MoveRight(float Amount)
 {
-	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
-	AddMovementInput(Direction, Amount);
+	if (!(CurrentHobby != nullptr && CurrentHobby->PlayerPerforming))
+	{
+		FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
+		AddMovementInput(Direction, Amount);
+	}
 }
 
 // Called to bind functionality to input

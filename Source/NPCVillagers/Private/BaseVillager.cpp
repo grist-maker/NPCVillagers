@@ -20,7 +20,6 @@ void ABaseVillager::BeginPlay()
 
 	PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	Responses = Cast<UDialogBank>(GetDefaultSubobjectByName("Dialog"));
-	
 	/*if (UseDialogueFile && Responses != nullptr)
 	{
 		FJsonSerializableArray Dialogue;
@@ -41,7 +40,7 @@ void ABaseVillager::BeginPlay()
 
 void ABaseVillager::FindSubBank(FString& StringValue, TArray<FString>* CurrentSubBank)
 {
-	if (StringValue.Equals("HighAffinity"))
+/*	if (StringValue.Equals("HighAffinity"))
 	{
 		CurrentSubBank = &Responses->HighAffinity;
 	}
@@ -104,7 +103,7 @@ void ABaseVillager::FindSubBank(FString& StringValue, TArray<FString>* CurrentSu
 	if (StringValue.Equals("HighAffinity"))
 	{
 		CurrentSubBank = &Responses->HighAffinity;
-	}
+	}*/
 }
 
 // Called every frame
@@ -214,6 +213,44 @@ void ABaseVillager::PositiveMoodHit(float MoodChange)
 	UpdateMood();
 }
 
+void ABaseVillager::ConverseTransition()
+{
+	if (ConversationPartner != nullptr && CurrentIdleBehavior == 2)
+	{
+		if (IsOverlappingActor(ConversationPartner))
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Conversation Time!"));
+			if (static_cast<APlayerVillager*>(ConversationPartner) && !static_cast<APlayerVillager*>(ConversationPartner)->ConversationTarget)
+			{
+				Talk();
+				static_cast<APlayerVillager*>(PlayerPawn)->ConversationTarget = true;
+				PlayerConversationInitiated = true;
+			//	auto ConverseOptions = IdleOptions[CurrentIdleBehavior];
+		//		CurrentTime.GenerateRandomTime(ConverseOptions->MinTime, ConverseOptions->MaxTime, ConverseOptions->StartTime, ConverseOptions->LastTime);
+			//	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("%d:%d"), ConverseOptions->LastTime.Hour, ConverseOptions->LastTime.Minute));
+			}
+		}
+	}
+}
+
+void ABaseVillager::HobbyTransition()
+{
+	if (TargetHobby >= Hobbies.Num())
+	{
+		return;
+	}
+	auto& InvokedHobby = Hobbies[TargetHobby];
+	if (Hobbies[TargetHobby] != nullptr && Hobbies[TargetHobby]->AssociatedObject != nullptr && IsOverlappingActor(Hobbies[TargetHobby]->AssociatedObject))
+	{
+		Hobbies[TargetHobby]->AssociatedObject->AddHobbyPerformer(this);
+		TravelingToHobby = false;
+		CurrentHobby = InvokedHobby->Name;
+
+		CurrentTime.GenerateRandomTime(InvokedHobby->MinHobbyTime, InvokedHobby->MaxHobbyTime, InvokedHobby->LastHobbyStartTime, InvokedHobby->ActiveHobbyEndTime);
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("%d:%d"), InvokedHobby->ActiveHobbyEndTime.Hour, InvokedHobby->ActiveHobbyEndTime.Minute));
+		State = UState::Hobby;
+	}
+}
 
 void ABaseVillager::Talk()
 {
@@ -227,12 +264,21 @@ bool ABaseVillager::RecoverEnergy()
 {
 	if (Energy < 10)
 	{
+		if (State == UState::Hobby && TargetHobby < Hobbies.Num())
+		{
+			Hobbies[TargetHobby]->AssociatedObject->RemoveHobbyPerformer(this);
+		}
 		NPCAIController->StopMovement();
 		State = UState::Unconscious;
 		return true;
 	}
-	else if (Energy < EnergyLevels[0] && !AtWork)
+	else if (Energy < EnergyLevels[0] && !AtWork && !GoingToBed)
 	{
+		if (State == UState::Hobby && TargetHobby < Hobbies.Num())
+		{
+			Hobbies[TargetHobby]->AssociatedObject->RemoveHobbyPerformer(this);
+		}
+
 		NPCAIController->StopMovement();
 		State = UState::Relaxing;
 		return true;
@@ -272,106 +318,180 @@ void ABaseVillager::RelaxingMoodImprovement()
 
 void ABaseVillager::WorkingBehaviors()
 {
-
+	TravelingToHobby = false;
+	CurrentIdleBehavior = 4;
 }
+
 void ABaseVillager::WalkingBehaviors()
 {
 	if (GetVelocity() == FVector{ 0, 0, 0 })
 	{
 		State = UState::Idle;
 	}
-	if (TargetHobby < Hobbies.Num())
+
+	if (Commuting)
 	{
-		auto& InvokedHobby = Hobbies[TargetHobby];
-		if (IsOverlappingActor(Hobbies[TargetHobby]->AssociatedObject))
+		TravelingToHobby = false;
+		CurrentIdleBehavior = 4;
+		return;
+	}
+
+	if (GoingToBed && Bed != nullptr)
+	{
+		NPCAIController->MoveToLocation(Bed->GetActorLocation());
+		if (IsOverlappingActor(Bed))
 		{
-			TravelingToHobby = false;
-			CurrentHobby = InvokedHobby->Name;
-			auto HobbyRange = InvokedHobby->MaxHobbyTime - InvokedHobby->MinHobbyTime;
-			int ProposedHours = 0;
-			int ProposedMinutes = 0;
-			if (HobbyRange.Hour >= 1)
-			{
-				ProposedHours = FMath::RandRange(0, HobbyRange.Hour);
-				if (ProposedHours == HobbyRange.Hour)
-				{
-					ProposedMinutes = FMath::RandRange(0, HobbyRange.Minute);
-				}
-				else
-				{
-					ProposedMinutes = FMath::RandRange(0, 59);
-				}
-			}
-			else
-			{
-				ProposedMinutes = FMath::RandRange(0, HobbyRange.Minute);
-			}
-			FTimestamp FinalAmount = { ProposedHours, ProposedMinutes };
-			FinalAmount = FinalAmount + InvokedHobby->MinHobbyTime;
-			
-			InvokedHobby->LastHobbyStartTime = CurrentTime;
-			InvokedHobby->ActiveHobbyEndTime = FinalAmount + CurrentTime;
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("%d:%d"), InvokedHobby->ActiveHobbyEndTime.Hour, InvokedHobby->ActiveHobbyEndTime.Minute));
-			State = UState::Hobby;
+			State = UState::Asleep;
 		}
+	}
+	else if (CurrentIdleBehavior == 1)
+	{
+		HobbyTransition();
+	}
+	else if (CurrentIdleBehavior == 2)
+	{
+		ConverseTransition();
 	}
 }
 
 void ABaseVillager::TalkingBehaviors()
 {
 	SetActorRotation((PlayerPawn->GetActorLocation() - GetActorLocation()).Rotation());
+	if (CurrentIdleBehavior == 2)
+	{
+		if (ConversationPartner != nullptr)
+		{
+			if (static_cast<APlayerVillager*>(ConversationPartner))
+			{
+				if (!CanTalk() || IdleOptions[CurrentIdleBehavior]->CurrentExecutions <= 0)
+				{
+					EndInitiatedDialog();
+				}
+			}
+			else
+			{
+				if (IdleOptions[CurrentIdleBehavior]->LastTime < CurrentTime || !CanTalk())
+				{
+					EndInitiatedDialog();
+				}
+			}
+		}
+		else
+		{
+			EndDialog();
+		}
+	}
+}
+bool ABaseVillager::CanTalk()
+{
+	int BadMood = static_cast<uint8>(Mood);
+	if (AtWork || Commuting || Energy <= EnergyLevels[0] || (BadMood != 0  && BadMood != 4))
+	{
+		return false;
+	}
+	return true;
 }
 
 void ABaseVillager::IdleBehaviors()
 {
-	int randomChance = FMath::RandRange(0, 100);
-	if (CurrentTime.Minute % 10 == 0)
-	{
-		if (randomChance >= 80 && AttemptHobbySelection())
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Hobby selected"));
-			State = UState::Walking;
-			return;
-		}
-		else
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Hobby not selected"));
-		}
-	}
+	CurrentIdleBehavior = 4;
+	PlayerConversationInitiated = false;
+	ConversationPartner = nullptr;
+	TargetHobby = Hobbies.Num();
 
-	if (GetVelocity() != FVector{ 0, 0, 0 })
+	if (!(Cast<APlayerVillager>(PlayerPawn) && Cast<APlayerVillager>(PlayerPawn)->InteractedNPC != nullptr && Cast<APlayerVillager>(PlayerPawn)->InteractedNPC->Name == Name))
 	{
-		State = UState::Walking;
+		int randomChance = FMath::RandRange(0, 100);
+
+		if (CurrentTime.Minute % 10 == 0)
+		{
+			if (randomChance <= IdleOptions[0]->Percent)
+			{
+				CurrentIdleBehavior = 0;
+				IdleLoafing();
+			}
+			else if (randomChance <= IdleOptions[0]->Percent + IdleOptions[1]->Percent)
+			{
+				CurrentIdleBehavior = 1;
+				if (AttemptHobbySelection())
+				{
+					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Hobby selected"));
+					State = UState::Walking;
+					return;
+				}
+			}
+			else
+			{
+				if (CanTalk())
+				{
+					CurrentIdleBehavior = 2;
+					InitiateConversation();
+					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Conversation selected"));
+				}
+				else
+				{
+					CurrentIdleBehavior = 0;
+					IdleLoafing();
+				}
+			}
+		}
+
+		if (GetVelocity() != FVector{ 0, 0, 0 })
+		{
+			State = UState::Walking;
+		}
 	}
 	else if (Cast<APlayerVillager>(PlayerPawn) && Cast<APlayerVillager>(PlayerPawn)->InteractedNPC != nullptr && Cast<APlayerVillager>(PlayerPawn)->InteractedNPC->Name == Name)
 	{
 		SetActorRotation((PlayerPawn->GetActorLocation() - GetActorLocation()).Rotation());
 	}
+}
 
-	if (PlayerPawn != nullptr && NPCAIController != nullptr && !Commuting)
+void ABaseVillager::DecrementConversations()
+{
+	IdleOptions[2]->CurrentExecutions -= 1;
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("%d"), IdleOptions[2]->CurrentExecutions));
+}
+
+void ABaseVillager::InitiateConversation()
+{
+	ConversationPartner = ChoosePartner();
+	if (ConversationPartner != nullptr)
 	{
-		if (!GetWorldTimerManager().IsTimerActive(IdleTimer))
-		{
-			if (!(Cast<APlayerVillager>(PlayerPawn) && Cast<APlayerVillager>(PlayerPawn)->InteractedNPC != nullptr && Cast<APlayerVillager>(PlayerPawn)->InteractedNPC->Name == Name))
-			{
-				GetWorldTimerManager().SetTimer(IdleTimer, this, &ABaseVillager::IdleLoafing, IdleSeconds, false);
-			}
-		}
+		NPCAIController->MoveToActor(ConversationPartner, 60, true);
+		State = UState::Walking;
 	}
 }
+
+AActor* ABaseVillager::ChoosePartner()
+{
+	if (!static_cast<APlayerVillager*>(PlayerPawn)->ConversationTarget)
+	{
+		auto NumberOfTimes = FMath::RandRange(IdleOptions[2]->MinExecutions, IdleOptions[2]->MaxExecutions);
+		IdleOptions[2]->CurrentExecutions = NumberOfTimes;
+		return PlayerPawn;
+	}
+	return nullptr;
+}
+
 void ABaseVillager::HobbyBehaviors()
 {
 	if (TargetHobby < Hobbies.Num())
 	{
 		auto& InvokedHobby = Hobbies[TargetHobby];
-		if (CurrentTime > InvokedHobby->ActiveHobbyEndTime)
-		{
-			State = UState::Idle;
-		}
-		else
+		if (CurrentTime.BetweenTwoTimes(InvokedHobby->LastHobbyStartTime, InvokedHobby->ActiveHobbyEndTime))
 		{
 			PositiveMoodHit(MoodGain / 10);
 			NegativeMoodHit(-MoodDrain / 10);
+			if (InvokedHobby->AssociatedObject->PlayerPerforming)
+			{
+				PlayerAffinity += HobbyAffinity;
+			}
+		}
+		else
+		{
+			Hobbies[TargetHobby]->AssociatedObject->RemoveHobbyPerformer(this);
+			State = UState::Idle;
 		}
 	}
 }
@@ -389,14 +509,67 @@ void ABaseVillager::UnconsciousBehaviors()
 }
 void ABaseVillager::AsleepBehaviors()
 {
+	if (!CheckToSleep())
+	{
+		State = UState::Idle;
+	}
+}
 
+void ABaseVillager::EndInitiatedDialog()
+{
+	CurrentIdleBehavior = 4;
+	TargetHobby = Hobbies.Num();
+
+	if(static_cast<APlayerVillager*>(ConversationPartner) && PlayerConversationInitiated)
+	{
+		static_cast<APlayerVillager*>(PlayerPawn)->InteractedNPC = nullptr;
+		static_cast<APlayerVillager*>(PlayerPawn)->ConversationTarget = false;
+		static_cast<APlayerVillager*>(PlayerPawn)->ConversationCleanup = true;
+	}
+
+	if (!Commuting && !AtWork && State != UState::Relaxing)
+	{
+		State = UState::Idle;
+	}
+	else if (Commuting)
+	{
+		State = UState::Walking;
+	}
+	else if (AtWork)
+	{
+		State = UState::Working;
+		SetActorRotation((Career->Workstation->GetActorLocation() - GetActorLocation()).Rotation());
+	}
+	else if (Energy < EnergyLevels[0])
+	{
+		State = UState::Relaxing;
+	}
+	return;
 }
 
 void ABaseVillager::UpdateStatus()
 {
+	if (GetWorldTimerManager().IsTimerActive(IdleTimer) && State != UState::Idle)
+	{
+		GetWorldTimerManager().ClearTimer(IdleTimer);
+	}
+	CheckToSleep();
+	if (GoingToBed)
+	{
+		TravelingToHobby = false;
+		if (State != UState::Asleep && State != UState::Unconscious && State != UState::Talking)
+		{
+			NPCAIController->MoveToLocation(Bed->GetActorLocation());
+			State = UState::Walking;
+			if (IsOverlappingActor(Bed))
+			{
+				State = UState::Asleep;
+			}
+		}
+	}
 	if (State != UState::Hobby && State != UState::Talking && CurrentHobby != "")
 	{
-		if (!TravelingToHobby)
+		if (!TravelingToHobby || Commuting || AtWork)
 		{
 			TargetHobby = Hobbies.Num();
 			CurrentHobby = "";
@@ -406,16 +579,11 @@ void ABaseVillager::UpdateStatus()
 			State = UState::Walking;
 		}
 	}
-	if (State != UState::Talking && State != UState::Asleep && RecoverEnergy())
+	if (State != UState::Talking && RecoverEnergy())
 	{
 		RelaxingMoodImprovement();
 	}
 	(this->*(Behaviors[static_cast<uint8>(State)]))();
-
-	if(GetWorldTimerManager().IsTimerActive(IdleTimer) && State != UState::Idle)
-	{
-		GetWorldTimerManager().ClearTimer(IdleTimer);
-	}
 	UpdateEnergy(true);
 }
 
@@ -432,6 +600,16 @@ void ABaseVillager::IdleLoafing()
 			State = UState::Walking;
 		}
 	}
+}
+
+bool ABaseVillager::CheckToSleep()
+{
+	if (Career != nullptr)
+	{
+		GoingToBed = CurrentTime.BetweenTwoTimes(Career->SleepTime, Career->WakeTime);
+		return GoingToBed;
+	}
+	return false;
 }
 
 bool ABaseVillager::AttemptHobbySelection()
@@ -453,7 +631,7 @@ bool ABaseVillager::AttemptHobbySelection()
 
 void ABaseVillager::EndDialog()
 {
-	if (State != UState::Unconscious)
+	if (State != UState::Unconscious && State != UState::Asleep)
 	{
 		State = PreviousState;
 
@@ -466,30 +644,37 @@ void ABaseVillager::EndDialog()
 
 void ABaseVillager::CheckOnJob(const UWeekday& CurrentDay)
 {
-	if (State != UState::Talking && !DoneWork && Career != nullptr)
+	if (!DoneWork && Career != nullptr)
 	{
-		if (Career->CommuteTime.Hour <= CurrentTime.Hour && Career->CommuteTime.Minute <= CurrentTime.Minute && !Commuting && !AtWork && Career->Days.Contains(CurrentDay) && (Career->EndTime.Hour >= CurrentTime.Hour))
+		if (State != UState::Talking || CurrentIdleBehavior < 3)
 		{
-			Commuting = true;
-			State = UState::Walking;
-			NPCAIController->MoveToActor(Career->Workstation, 0, true);
-		}
-		else if ( Career->EndTime.Hour == CurrentTime.Hour &&  Career->EndTime.Minute <= CurrentTime.Minute &&  AtWork)
-		{
-			AtWork = false;
-			DoneWork = true;
-			State = UState::Idle;
-		}
-		else if ( Commuting &&  IsOverlappingActor( Career->Workstation))
-		{
-			AtWork = true;
-			Commuting = false;
-			State = UState::Working;
-			NPCAIController->StopMovement();
-		}
-		else if ( Commuting &&  State != UState::Talking &&  GetVelocity().GetAbsMax() < 1)
-		{
-			NPCAIController->MoveToActor( Career->Workstation, 0, true);
+			if (CurrentTime.BetweenTwoTimes(Career->CommuteTime, Career->EndTime) && !Commuting && !AtWork && Career->Days.Contains(CurrentDay))
+			{
+				Commuting = true;
+				NPCAIController->MoveToActor(Career->Workstation, 0, true);
+				if (State == UState::Talking)
+				{
+					EndInitiatedDialog();
+				}
+				State = UState::Walking;
+			}
+			else if (!CurrentTime.BetweenTwoTimes(Career->CommuteTime, Career->EndTime) && AtWork)
+			{
+				AtWork = false;
+				DoneWork = true;
+				State = UState::Idle;
+			}
+			else if (Commuting && IsOverlappingActor(Career->Workstation))
+			{
+				AtWork = true;
+				Commuting = false;
+				State = UState::Working;
+				NPCAIController->StopMovement();
+			}
+			else if (Commuting && State != UState::Talking && GetVelocity().GetAbsMax() < 1)
+			{
+				NPCAIController->MoveToActor(Career->Workstation, 0, true);
+			}
 		}
 	}
 }

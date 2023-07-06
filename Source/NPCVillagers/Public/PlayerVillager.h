@@ -38,6 +38,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	ABaseVillager* InteractedNPC;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	AHobbyStation* CurrentHobby = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		bool ConversationTarget = false;
+		
+		UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool ConversationCleanup = false;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -48,5 +57,4 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 };

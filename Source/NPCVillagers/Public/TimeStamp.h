@@ -54,18 +54,18 @@ public:
 
 	FTimestamp operator-(FTimestamp RHSTimestamp)
 	{
-		int newHours = 0;
+		int newHours = Hour - RHSTimestamp.Hour;
 		int NewMinutes = Minute - RHSTimestamp.Minute;
-		if (NewMinutes <= 0)
+	
+		if (NewMinutes < 0)
 		{
-			newHours = Hour - (NewMinutes / 60);
+			newHours -= (1 + (NewMinutes / 60));
 			NewMinutes = (NewMinutes % 60);
 			if (NewMinutes < 0)
 			{
 				NewMinutes += ((-NewMinutes / 60)+1)*60;
 			}
 		}
-		newHours -= RHSTimestamp.Hour;
 		FTimestamp newTimestamp{ newHours, NewMinutes };
 
 		return newTimestamp;
@@ -79,7 +79,7 @@ public:
 		}
 		if (RHSTimestamp.Hour == Hour)
 		{
-			if (RHSTimestamp.Minute < Minute)
+			if (RHSTimestamp.Minute > Minute)
 			{
 				return true;
 			}
@@ -101,5 +101,80 @@ public:
 			}
 		}
 		return false;
+	}
+
+	bool operator>=(FTimestamp RHSTimestamp)
+	{
+		return (*this > RHSTimestamp || *this == RHSTimestamp);
+	}
+
+	bool operator<=(FTimestamp RHSTimestamp)
+	{
+		return (*this < RHSTimestamp || *this == RHSTimestamp);
+	}
+
+	bool BetweenTwoTimes(FTimestamp FirstValue, FTimestamp SecondValue)
+	{
+		FTimestamp Difference;
+		bool IsBetween = false;
+
+		if (FirstValue > SecondValue)
+		{
+			if (*this >= FirstValue || *this <= SecondValue)
+			{
+				IsBetween = true;
+			}
+			else
+			{
+				IsBetween = false;
+			}
+		}
+		else
+		{
+			Difference = SecondValue - FirstValue;
+			if (*this > FirstValue && *this < Difference + FirstValue)
+			{
+				IsBetween = true;
+			}
+			else
+			{
+				IsBetween = false;
+			}
+		}
+		return IsBetween;
+	}
+
+	void GenerateRandomTime(FTimestamp MinTime, FTimestamp MaxTime, FTimestamp& StartTime, FTimestamp& LastTime)
+	{
+		auto TimeRange = MaxTime - MinTime;
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Range time %d:%d"), TimeRange.Hour, TimeRange.Minute));
+		int ProposedHours = 0;
+		int ProposedMinutes = 0;
+
+		if (TimeRange.Hour >= 1)
+		{
+			ProposedHours = FMath::RandRange(0, TimeRange.Hour);
+			if (ProposedHours == TimeRange.Hour)
+			{
+				ProposedMinutes = FMath::RandRange(0, TimeRange.Minute);
+			}
+			else
+			{
+				ProposedMinutes = FMath::RandRange(0, 59);
+			}
+		}
+		else
+		{
+			ProposedMinutes = FMath::RandRange(0, TimeRange.Minute);
+		}
+		FTimestamp FinalAmount = { ProposedHours, ProposedMinutes };
+		FinalAmount = FinalAmount + MinTime;
+
+		StartTime = *this;
+		LastTime = FinalAmount + *this;
+		if (LastTime.Hour >= 24)
+		{
+			LastTime.Hour -= 24;
+		}
 	}
 };

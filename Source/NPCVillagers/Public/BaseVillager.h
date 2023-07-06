@@ -21,6 +21,7 @@
 #include "NavigationSystem.h"
 #include "AbstractNavData.h"
 #include "Misc/FileHelper.h"
+#include "SubBehavior.h"
 #include "BaseVillager.generated.h"
 
 UCLASS()
@@ -44,7 +45,7 @@ public:
 	FString Name;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Unique")
-	class UObject* Bed;
+	AActor* Bed;
 
 	/// <summary>
 	/// Block category is used to specify the building blocks used to make up the NPC. As the name implies, the building
@@ -218,6 +219,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Objective")
 	bool DoneWork = false;
 
+	AActor* ConversationPartner;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IdleOptions")
+	FSubbehavior MeanderBehavior{ USubbehaviors::Meander };
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IdleOptions")
+	FSubbehavior HobbyBehavior{ USubbehaviors::Hobby };
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IdleOptions")
+	FSubbehavior ConverseBehavior{ USubbehaviors::Converse };
+
+	FSubbehavior* IdleOptions[3]
+	{
+		&MeanderBehavior,
+		&HobbyBehavior,
+		&ConverseBehavior
+	};
+
+	int CurrentIdleBehavior = 3;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -229,6 +247,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
+	void HobbyTransition();
+	void ConverseTransition();
+
 	void WorkingBehaviors();
 	void WalkingBehaviors();
 	void TalkingBehaviors();
@@ -237,6 +259,11 @@ public:
 	void RelaxingBehaviors();
 	void UnconsciousBehaviors();
 	void AsleepBehaviors();
+
+	void EndInitiatedDialog();
+
+	UFUNCTION(BlueprintCallable)
+	void DecrementConversations();
 	
 	typedef void (ABaseVillager::*StateBehaviors)(void);
 	StateBehaviors Behaviors[8]
@@ -279,6 +306,7 @@ public:
 
 	void PositiveMoodHit(float MoodChange);
 
+	UFUNCTION(BlueprintCallable)
 	void Talk();
 
 	void IdleLoafing();
@@ -288,6 +316,10 @@ public:
 	bool AttemptHobbySelection();
 
 	void CheckOnJob(const UWeekday& CurrentDay);
+
+	bool CheckToSleep();
+
+	bool CanTalk();
 
 	FTimerHandle IdleTimer;
 
@@ -305,8 +337,11 @@ public:
 	bool UseDialogueFile = false;
 
 	bool TravelingToHobby = false;
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueFile")
-	//TCHAR FilePath;
+
+	bool GoingToBed = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool PlayerConversationInitiated;
 
 
 	void FindSubBank(FString& StringValue, TArray<FString>* CurrentSubBank);
@@ -315,4 +350,9 @@ public:
 	/// </summary>
 	UFUNCTION(BlueprintCallable)
 	void EndDialog();
+
+	UFUNCTION(BlueprintCallable)
+	void InitiateConversation();
+
+	AActor* ChoosePartner();
 };

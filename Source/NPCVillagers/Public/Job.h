@@ -52,6 +52,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	AActor* Workstation;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FTimestamp WakeTime;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FTimestamp SleepTime;
+
 protected:
 	/// <summary>
 	/// This function is called once, at the beginning of the Job's time in the scene.

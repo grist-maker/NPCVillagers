@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "Engine/UserDefinedEnum.h"
 #include "TimeStamp.h"
+#include "HobbyStation.h"
 #include "Hobby.generated.h"
 
 UCLASS()
@@ -24,7 +25,7 @@ public:
 	FTimestamp HobbyDelay{ 0,0 };
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	AActor* AssociatedObject;
+	AHobbyStation* AssociatedObject;
 
 	FTimestamp LastHobbyStartTime{ 0, 0 };
 	FTimestamp ActiveHobbyEndTime = { 0, 0 };

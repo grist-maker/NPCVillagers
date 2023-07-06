@@ -155,10 +155,10 @@ FString UDialogBank::SelectMoodResponse(bool AdjustStats, bool IncludePersonalit
 	ABaseVillager* Npc = Cast<ABaseVillager>(GetOwner());
 	if (Npc != nullptr && Npc->Career != nullptr)
 	{
-		if (AdjustStats)
-		{
-			Npc->Talk();
-		}
+	//	if (AdjustStats)
+		//{
+			//Npc->Talk();
+		//}
 		UDialogBank* NpcJob = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()));
 
 		FString OverrideCheck = CheckForOverride(Npc);
@@ -221,10 +221,10 @@ FString UDialogBank::SelectEnergyResponse(bool AdjustStats, bool IncludePersonal
 	ABaseVillager* Npc = Cast<ABaseVillager>(GetOwner());
 	if (Npc != nullptr && Npc->Career != nullptr)
 	{
-		if (AdjustStats)
-		{
-			Npc->Talk();
-		}
+	//	if (AdjustStats)
+		//{
+	//		Npc->Talk();
+		//}
 		int Response = 0;
 		UDialogBank* NpcJob = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()));
 
@@ -278,10 +278,10 @@ FString UDialogBank::SelectRelationshipResponse(bool AdjustStats, bool IncludePe
 	ABaseVillager* Npc = Cast<ABaseVillager>(GetOwner());
 	if (Npc != nullptr && Npc->Career != nullptr)
 	{
-		if (AdjustStats)
-		{
-			Npc->Talk();
-		}
+	//	if (AdjustStats)
+		//{
+	//		Npc->Talk();
+		//}
 		int Response = 0;
 		UDialogBank* NpcJob = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()));
 
@@ -339,7 +339,7 @@ FString UDialogBank::SelectWorkResponse()
 	ABaseVillager* Npc = Cast<ABaseVillager>(GetOwner());
 	if (Npc != nullptr && Npc->Career != nullptr)
 	{
-		Npc->Talk();
+		//Npc->Talk();
 		UDialogBank* NpcJob = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()));
 		if (NpcJob != nullptr && Npc->NPCAIController != nullptr)
 		{
@@ -385,7 +385,7 @@ FString UDialogBank::SelectGenericResponse()
 	ABaseVillager* Npc = Cast<ABaseVillager>(GetOwner());
 	if (Npc != nullptr)
 	{
-		Npc->Talk();
+	//	Npc->Talk();
 		if (Npc != nullptr && Npc->NPCAIController != nullptr)
 		{
 			FString OverrideCheck = CheckForOverride(Npc);
@@ -435,10 +435,10 @@ FString UDialogBank::SelectCoworkerResponse(bool& HitCoworker, bool AdjustStats,
 
 	if (Npc != nullptr && Npc->Career != nullptr)
 	{
-		if (AdjustStats)
-		{
-			Npc->Talk();
-		}
+		//if (AdjustStats)
+	//	{
+		//	Npc->Talk();
+		//}
 		UDialogBank* NpcJob = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()));
 		FString OverrideCheck = CheckForOverride(Npc);
 		if (OverrideCheck != "")
@@ -528,7 +528,7 @@ FString UDialogBank::SelectRandomResponse()
 	ABaseVillager* Npc = Cast<ABaseVillager>(GetOwner());
 	if (Npc != nullptr && Npc->Career != nullptr)
 	{
-		Npc->Talk();
+		//Npc->Talk();
 		UDialogBank* NpcJob = Cast<UDialogBank>(Npc->Career->GetComponentByClass(UDialogBank::StaticClass()));
 		FString OverrideCheck = CheckForOverride(Npc);
 		if (OverrideCheck != "")
