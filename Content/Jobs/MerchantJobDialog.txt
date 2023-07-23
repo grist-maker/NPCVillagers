@@ -1,0 +1,72 @@
+HighAffinity
+I think a LOT of customers could learn a thing or two from you, especially about treating workers like... People.
+You know, just seeing you drop by the store always puts a smile on my face. A real one! Not a please-don't-talk-to-me one.
+You're really polite, you know that? You could definitely get hired at one of those "we're like a family" places. But uh, don't.
+MidAffinity
+Honestly? I think you're pretty cool. You seem nice, and you always refold clothes once you're done looking at them.
+Hey, I actually look forward to talking with you like this a good deal. It's really helpful for unwinding at the end of a crazy shift.
+Always nice to see you so energetic. I like getting to help people and see them living their best lives like that.
+LowAffinity
+Sorry, do you need a manager? Maybe you can treat them with basic respect.
+Look... You need to work on your human interaction skills, ok? Mostly the part where you aren't a huge jerk to people.
+I actually cringe everytime I see you show up when it's my shift. Like, oh, guess I have to deal with this guy now. Super. But I mean, maybe you can learn?
+HighEnergy
+Wow, I'm on fire today! I got to help a lot of people find what they were looking for, take inventory, greet some customers... And I'm still full of energy.
+Usually by this point I'm starting to get a bit drowsy but... I'm actually looking forward to helping people next shift.
+I bet you've never seen a customer service worker THIS awake, huh?
+MidEnergy
+Up again for the daily grind. It's not so bad this time around though, I can still walk at least.
+I love this part of the day, where I get to unwind a bit and relax without being exhausted. The good part about running around so much on the job is that it makes great exercise!
+I almost had enough energy to fill in for my coworker when they dipped last shift. Almost.
+LowEnergy
+Oh, I DEFINITELY need a break from being on my feet all day... Go talk to someone else.
+Shift over... No energy... Bye...
+...Ask someone else for help... I'm on break...
+HappyMood
+It's actually pretty beautiful out today, right? I love getting to watch the day go by, even if it's just from a window sometimes.
+Deep down, most of us are actually pretty good people. When you come at folks with a positive attitude hard enough, they usually do the same for you.
+Things are running pretty smoothly today, all things considered. I feel pretty fulfilled honestly, I may complain a lot but I do love getting to work with people so much.
+SadMood
+Can't talk right now, too emotionally barren...
+Feeling like no one really treats me like a person... More like an emotional punching bag. Go away, please.
+What a day... Wish I could call in sick for tomorrow.
+AngryMood
+Some people... Who came up with that "customer is always right" thing? They're probably in the ground right? But we still need to deal with the legacy, of course.
+I just... How on Earth is it MY fault that YOUR day was bad? Not you, just in a mood, go somewhere else. 
+The amount of physical and emotional labor this job takes sometimes... AGH! How is it so hard for some people to be respectful?!
+ExcitedMood
+I feel motivated, like yeah! I bet I could clean up, open, restock, close down for the day...
+I met the cutest little kid earlier. She had one of those mini carts, she said she wanted to grow up just like me! I guess I am making a difference.
+There are some perks to having a "fast-paced job" you know. When you're emotionally restless like I am today, there's never a lack of things to do.
+ScaredMood
+Maybe I shouldn't have told that guy off earlier... If he actually filed a complaint about me then...
+There were less shoppers than usual recently... This place isn't going out of business is it?
+I'm a bit worried about how stable this place is going to be with the increased cost of goods lately...
+BusyState
+Can I help you? Oh, I'm working right now, can't talk!
+My boss would fire me if she saw me talking to you on the clock! Have a nice day!
+Hello! I'm at work right now! I can't express emotions~
+HurtReactions
+I hope your card gets DECLINED next time you try to check out!
+You know what? I'm not going to apply the next discount to you!
+Why don't you apply for a job with our store, get put on stocking, and get CRUSHED BY A BOX.
+LikedGifts
+Oh, I saw this earlier! When I was stocking shelves, I almost wanted to take one home with me... But I didn't! I'm a good employee, ahaha...
+Oh my gosh. I totally have to let you in early whenever you want to skip lines! ...But don't tell anyone.
+I've never seen anything this cool... And I've seen a LOT of different products. You're seriously the best!
+MiddleGifts
+Wow I... I wasn't expecting someone would be bringing ME something. It's a nice change of pace, thank you!
+Is that gift for me..? Wait, I totally wrapped this up for you earlier! Haha, you sly dog!
+I really appreciate you thinking of me so much, did I leave that much of an impression last time I showed you the electronics aisle?
+DislikedGifts
+Oh, are you trying to make a return? Sorry, we don't produce anything of THAT quality.
+Did you need assistance finding one of the rubbish bins conveniently located throughout the store?
+Yeah... Yeah I don't think that represents our company values.
+Coworker
+ is so organized and clean all the time! They're usually first to fix things up after a rambunctious customer moves everything around.
+ has WAY more patience than me when it comes to nasty people. It's no wonder they've been working here so long...
+ absolutely ROCKS! I definitely owe them a few extra shifts at this point...
+HurtCoworker
+ has to go through SO MUCH already, just working here! Are you crazy?!
+ didn't do a thing to you! And you come back the next day, asking me for help finding the dairy section?
+'s enemy is MINE. People in this kind of job have to stay together... Against people like YOU.

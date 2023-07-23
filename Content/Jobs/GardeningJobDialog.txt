@@ -1,0 +1,72 @@
+HighAffinity
+You know, some people say raising a garden is similar to making friends. You need to tend to them, nurture them, cover them with manure... It worked with you, didn't it?
+If I knew you were going to come talk to me today, I would have made you a bouqet. Try giving me a warning next time?
+I still can't believe I got a friend like you. And I didn't even need to bring you home-grown flowers or a fruit basket or anything!
+MidAffinity
+Did you know that talking to plants helps them grow faster? At least, that's what people say. Personally, I just think they make good company.
+Hello there. Here to exchange planting schedule plans? I'm not sure what to plant after potatoes next month...
+Ah, you came by just a minute too late. I was enjoying some fresh carrots before you arrived. Well, there'll be more in around 60 days.
+LowAffinity
+Oh, you're still here? I called pest control hours ago.
+You know, I've learned a lot about weeding over the years. You REALLY need to make them feel unwelcome for them to go away. Reminds me of someone I know.
+Some people really aren't worth the grass they trample on, huh? Not talking about anyone in particular, or anything like that.
+HighEnergy
+I'm on a ROLL today! Did you see how many pumpkins I lugged around? I barely even broke a sweat.
+I feel like someone poured fertilizer on me while I slept: full of energy and growth. And maybe in need of a shower.
+Maybe all this physical work and sweat in the heat is starting to pay off. I have more energy than I know what to do with!
+MidEnergy
+Hello there. I'm a bit parched, wish someone would water me... No, no that would be weird. Please don't do that.
+On a scale from fruit to vegetable... My energy would be best represented as a tomato.
+I've done more growing than a good deal of plants I know today. Besides Mrs. Sunflower, she is just killing it lately.
+LowEnergy
+I'm trying to do that... that thing where plants convert stuff to fuel... 
+If only there was some shady tree to nap under...
+I'm too weak to even move a muscle... Is this how flowers feel..? No, flowers are too strong...
+HappyMood
+Did you know plants have some sense of emotions too? It made me want to try a more positive attitude today.
+All the flowers seemed so happy to see me today, I thought it would be a shame to not share in their mirth a bit.
+I am feeling positively radiant today! No wonder the plants loved seeing me. Well, maybe the fertilizer helped a bit.
+SadMood
+Feeling droopy... Not enough sunshine in my life right now.
+*sniff* Maybe I can at least water Mrs. Sunflower with these tears... No... No, too salty for her.
+I'm so sorry Daisy... I didn't mean to step on your leaf...
+AngryMood
+Out of my way, lest you incur the wrath of Mother Nature! We're tight like that!
+Oh you do NOT want to talk to me right now... Some moron walked their dog right through the petunias today. I don't want to talk about it.
+No, I will NOT get over it. I have the stubborness of an oak tree, the thorns of a rose... And the bees are on my side too!
+ExcitedMood
+The next season will bring so many opportunities for garden composition with it... I can't stop thinking of how nicely the tomatoes and avocado will complement each other!
+I've been thinking of a new idea for flower cross pollination... Wouldn't it be amazing to see a garden with NATURAL GREEN ROSES?!
+Mrs. Sunflower has shown remarkable growth today. I'm going to be getting drinks with her tonight to celebrate, care to join?
+ScaredMood
+It's been so long since it rained... I know Mrs. Sunflower can't take this dry air much longer!
+Someone's trying to destroy all my hard work, I just KNOW it. Why else would Petunia be wilting like that today?
+Whoever this veggie thief is, I hope they don't mess with the new buds... They can't afford to lose what little they have.
+BusyState
+Watch if you need to, but don't interrupt my shoveling again.
+Still working. These saplings need my undivided attention.
+Can't you see I'm working? Sorry, Mrs. Sunflower. Now where were we?
+HurtReactions
+I'll bury you in the composter!
+I'll make sure you NEVER get fresh produce again!
+I'm warning you, don't mess with the one in charge of the food!
+LikedGifts
+Oh, wow this is incredible! I can't wait to show Mrs. Sunflower, she's going to love this!
+This is so thoughtful... You're an amazing listener, you know that? You remind me of a plant I know!
+What a lovely gift... Remind me to bring you some flowers next time we meet!
+MiddleGifts
+It's so nice of you to bring me a gift like this! I'm glad you can appreciate the time I spend working to brighten the plant life of this village. 
+I wasn't expecting you to give me anything today. I feel good enough to bloom, thank you!
+Aw, that's nice of you. I appreciate you thinking of me... and might give you first pick of this week's harvest.
+DislikedGifts
+At least it might compost well.
+Well now... This is just rude. I don't need your trash dirtying up my day, I need to spend enough time cleaning the garden already,
+Are you not satisfied with how the flowers are looking today? They're not a fan of how YOU look either.
+Coworker
+ is so sweet to all the little saplings... I heard them telling them stories the other day! Just the cutest.
+ and I had the loveliest picnic the other day, right by the new blooms! You should join us next time.
+ has to be my soulmate... It's like our roots are entangled. No, wait, not like that!
+HurtCoworker
+ talks too, you know. You can't hide from me, you weed. I wouldn't go to the garden at night, if I were you.
+ is a beautiful lily of a person. Not that you'd know that, pest.
+ told me there was a serious littering problem but... I didn't expect trash to just start talking to me like this.

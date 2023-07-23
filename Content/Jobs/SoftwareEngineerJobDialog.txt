@@ -1,0 +1,72 @@
+HighAffinity
+No matter how much time I spend staring at a screen each day, I know I'll get to see your face at the end and my eyes will be refreshed. Thank you for that.
+Are you a fan of computers? I found them easy to understand, after I got used to them. A bit like how I got to know you!
+I don't really understand what drew you to me, but I'm not complaining. I love my job, but I was looking for something to break up its monotony when you met me.
+MidAffinity
+Hey, how's it going? Taking breaks to stretch and keeping your typing posture up? Too many people neglect that care until it comes back to bite them.
+Make sure when you're looking at a screen, the room you're in isn't too dark. That's a surefire way to mess up your eyesight for years to come.
+Did you know some devices let you install trackers that monitor the time you spend using them each day? I got one on my phone and... It's not so pretty.
+LowAffinity
+If you're talking to me, you must need something. Well, for the record, I don't know how to  fix your printer and don't care enough to learn.
+Look, sometimes two devices just, aren't compatible. Can't understand each other or communicate in any meaningful way. Do you get what I'm saying?
+I'm not sure I like these chats much. It feels more like you're pretending to be a tech podcast host or something, but don't care to learn about me as a person.
+HighEnergy
+Turning off the computer and winding down with a book before bed really helped. I'm just full of energy today!
+Hey there. I feel more motivated than usual today, like I can finally understand how to get around all the roadblocks for my work.
+I'm feeling pretty active today actually. It's important to get some amount of exercise in each day, especially when your job isn't very physical!
+MidEnergy
+Ugh, my hands are sore from all the typing lately... It's a touch draining honestly. Maybe I should look to getting a brace?
+Nothing like sitting at a computer for hours on end to wear you out a bit. At least I can feel satisfied I got a lot done!
+Hello there. Care to grab some coffee with me? No, actually, I need to learn to stay away from that stuff. It's too overplayed for tech workers like me.
+LowEnergy
+I have the WORST migraine right now... Please keep it down.
+Strained my eyes earlier, give me a chance to rest...
+Hey, I know you want to talk, but I need to recharge my batteries for a bit. Come by later.
+HappyMood
+Feeling pretty happy today, I recently managed to fix an issue that's been sitting there unsolved for MONTHS. Pretty cool, right?
+I don't think I could feel much better today. Really, things are just going well. I almost expected something at work to crash and burn to spite that...
+It's hard to tell when you're constantly online but... There really is a lot of good out there. I like getting to take the time to admire it like this.
+SadMood
+Seriously messed up with the version control system the other day... I don't want to talk about it.
+I still can't believe I pushed something so stupid... How am I going to work out the bugs in time?
+Leave me  alone for a bit... I seriously just need to be alone. Text if it's really important.
+AngryMood
+Back off for a bit. I'm really not in the mood right now, too much junk to figure out if we want to release on time.
+Seriously, leave me alone. I'm not going to fix your smart fridge, or whatever's acting up!
+I'm in a MOOD. Mind going away so I can get back to thinking about how much I HATE MY JOB SOMETIMES?!
+ExcitedMood
+I'm just so excited today! Everything feels like it's looking up, we might actually get to release our new project early.
+"Tough, but rewarding" summarizes a lot of my career history pretty well, and it looks like I'm getting to the more rewarding part soon. I can't wait!
+Don't you just feel... ambitious, today? Like, I feel like I could do anything. Maybe even ask for feedback on the latest push I made to our project.
+ScaredMood
+The whole project's up in flames again... How are we going to get this worked out..? We don't have NEARLY enough time to work out the bugs.
+I can't believe I didn't notice all that unaddressed opportunity for failure... There's no way we'll get approved at this rate.
+I'm more than a little bit anxious about work right now. I really need you to leave me alone to think on how to get things fixed in time!
+BusyState
+Working, I can't stop now or I'll forget what I was doing.
+Trying to track down a particularly nasty bug, wait until I'm off work.
+I can't talk, or I'll lose focus again. Back off for a bit!
+HurtReactions
+I'm still never going  to fix your printer!
+It's not a good idea to mess with someone that has my technical skillset!
+I'll uh... I'll hack your car if you don't stop! I can do that!
+LikedGifts
+You... Really care about me this much? I mean, all I do is stare at a screen all day, and you still take the time to give me something this AMAZING?
+This is... This is really thoughtful. I didn't think you noticed me all that much compared to some of the more exciting people that work in this little village... Thank you!
+This is so quirky and modern... I love it! You try to keep up with all the latest trends, huh?
+MiddleGifts
+What a nice surprise! I've been feeling a bit underappreciated at work lately, this really picked up my spirits.
+Hey, this is kind of cute! Nicer still that you even took thte time to think of a relatively boring person  like me at all.
+That's pretty nice of you! I'm definitely putting this on my desk.
+DislikedGifts
+Are you trying to mess with me? Do you just like provoking me because it's funny to "bully the nerd" or something?
+Yeah... I kind of understand how you can hate something enough to grab a truckload and bury it all in the desert now.
+This one really isn't your best work. Kind of a flop honestly, I'd give it... 2.3/10?
+Coworker
+ is a total beast with all things electronic. I'm starting to think they might be a robot.
+ somehow always manages to find completely unheard of bugs whenever they try testing...
+ has to be one of the craziest people I know! Who even uses a vertical external monitor?
+HurtCoworker
+ mentioned you the other day, yeah. I can tell you there's absolutely no way you'll end up in this industry.
+ isn't a stranger to me, I can always count on them to listen when I'm trying to find a bug... A bug you're no better than after what you did.
+ and I talk all the time. I mean, I look at their code nearly every day! What made you think you and I could be friends after how you treated them?

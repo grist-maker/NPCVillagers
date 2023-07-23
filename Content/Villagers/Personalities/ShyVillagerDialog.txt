@@ -1,0 +1,144 @@
+HighAffinity
+I was hoping we'd get to talk more today. I've been waiting...
+I like spending time with you like this. You're a lot more... understanding than other people I've known.
+It's been a while since I've been so at peace talking to someone... Like I can really just say whatever's on my mind freely.
+Are you happy in such a small, busy town? I mean, I guess it really doesn't matter where we are, as long as I'm with you.
+I'm not exactly the kind of person who wants to go get coffee at a cafe together, but I wouldn't mind having you over for a cup sometime.
+Ah, hello again. How has the day been treating you? I look forward to getting to hear your answer to that everyday.
+You're the type of person that can't give up on things they've started, aren't you? You certainly didn't give up on me. I appreciate it.
+MidAffinity
+Things are pretty quiet today... I'm glad we can appreciate that kind of peace.
+What's on your mind today? Not much going on here...
+Oh, you want to talk to me? Go ahead, I'm a good listener.
+You seem pretty nice... Not everyone takes the time to really listen to those around them.
+Hm... We're pretty similar, aren't we? Well, thank you for taking the inititative in talking to me.
+The weather is nice for a walk today... Care to join me?
+I find myself reading a lot lately. Any books you'd recommend?
+LowAffinity
+I don't want to talk... Can't you say something?
+I don't think this conversation is going anywhere....
+"I'm not sure we really click...
+Why are you so interested in me..?
+I'm not really good at this... Sorry.
+...Isn't there someone else you'd rather talk to?
+Do you really like me..? I thought you hated me.
+HighEnergy
+I've got a bit more energy than usual today. I don't need to pause at all when I speak!
+Today feels... invigorating. Like I'm capable of just about anything.
+I feel like I could climb a mountain today... Or at least reach the halfway point.
+I'm not much for social gatherings but... If I was, I'd have the energy to host.
+The day hasn't started to wear on you already, has it? I'm still feeling wide awake.
+Hm... Maybe those new pillows I bought really DID make a difference. I figured it was a scam, but maybe this energy is proof I was wrong.
+Do you feel restless too today? It's... a new feeling for me. Not sure I like it yet.
+MidEnergy
+Hm... I feel like I'm starting to tire. Not quite break time yet though. We've got to hang in there a bit longer.
+I think I feel satisfied with what I've done so far today. But I still have a ways to go before bedtime... In the mood to talk?
+Come to wind down a bit with me? It's fine, I've been known to have that effect on people...
+Maybe I lost track of time... I feel like I've been up for quite a bit already.
+You still seem like you're full of energy... How do you do it? Is it something special you drink, or more of a lifestyle change?
+A touch peaceful, with a few decisions along the way... Just the right amount of action for me. Now I'll be ready to sleep later.
+Still in the mood to talk? My social battery's running a bit low... But for you, maybe I can make an exception.
+LowEnergy
+Too... Tired... For... Words...
+I need to rest for now... Please...
+Can't talk... Brain fried...
+...Did you say something? I am hardly conscious...
+Recharging. Talk later.
+I'm fine... Just let me relax a bit longer...
+...Five more minutes...
+HappyMood
+You seem chipper today... I'm not in a bad mood myself. I bet I could even smile. See?
+It's not a bad day today. Actually, it's been quite good... Maybe it's the karma I've been saving up?
+Hey there. Things seem to be going pretty alright for now. Kind of nice, really. Getting to talk to you more is another benefit.
+Surprised to see me in such a good mood? ...Well you didn't have to say it like THAT. But I am feeling well.
+Talking seems to come a lot more naturally today... Maybe something changed in the air? Or maybe I just like talking to you.
+So... Do people tend to feel happy and positive like this often? Asking for a friend.
+You know, it's important to take breaks to appreciate the small things. I've been doing that all day, and I couldn't be happier.
+SadMood
+I look gloomy, don't I..? It's ok... No need to check on me. I'll figure it out...
+I'm...in a bad place emotionally right now. Just leave me to it, I'll be fine.
+Talking doesn't help when I get like this... I need to be alone. That includes from you.
+...I don't want to be here right now. Can you just leave me alone?
+Hey... You don't need to check on me. I'm an adult, I've been sad before. I can deal with it myself.
+I don't feel so happy right now. Don't let me bring you down too... That will just make me feel worse.
+I need to wallow for a bit. Can you let me do that, please? Without you?
+AngryMood
+Can you just back off for a bit? I'm not in the mood.
+I'm feeling moody. Don't take it personally. Or do, I don't care... Sorry, I do care. Just leave me alone for a bit.
+I. Don't. Want. To. TALK!
+Stay out of my way. Please. Just step a bit to the side so I can go cool off.
+I don't need to actually tell you to get lost to be alone for a bit, do I?
+Are you trying to tick me off? I am in a mood. I don't think you want to talk to me while I'm in a mood.
+Oh, wow ok. That's great. Just SUPER. Yeah, I'm sure THIS will work out well...
+ExcitedMood
+I'm feeling a bit daring. Might even text that guy I went to highschool with... No, not that daring.
+Howdy partner. Ah, is that too much? I kinda felt like trying something new...
+Wouldn't it be fun to just take to the road on an adventure and never look back, like in the movies? I always dreamed of trying something like that.
+I was SO outgoing today. I told the cashier to have a nice day when I picked up my pizza and everything!
+It's a new day tomorrow, isn't it? Maybe that's my chance to switch careers and make my own shop... No, too many people.
+When you think about it, there really isn't much you can't do, is there..? I mean, humans went to the moon... That's what they want you to think anyway...
+You know what? Starting today, I am going to be a new person. I am going to go to a party... and I'll pretend to like it!
+ScaredMood
+I've been really getting into conspiracy theories lately... Why..? Oh... No reason. No reason at all!
+They're in the walls... Crawling on my skin... They're all around me, closing in... Who? T-termites, what else?
+Oooh I hear them rustling... Sneaking through the bushes, climbing in the trees... They know our names... I read an interesting article about them the other day.
+Ohhh I know I'm not gonna like this...
+Crazy stuff happens in this village... Did you see that flock of crows the other day? That's a bad omen...
+You can't trust him... No, no never again! I know he's planning something... He has to be, this never lasts...
+Stay back..! I don't want to hurt you, but I will!
+BusyState
+...
+Please leave me alone...
+I'm busy...
+...Can I help you? I'm doing something right now...
+Can this wait? I'm still at work...
+I don't have time to talk right now...
+Still working...
+HurtReactions
+What the?! Why?
+That hurt! Please stop!
+Stay away from me!
+What did I do?!
+Try to calm down!
+You're scaring me!
+Did I do something wrong?
+LikedGifts
+Oh this... This is really nice. Are you sure you want to give it to me? No strings attached? Thank you!
+This is very high quality... You must have impeccable taste. I can hardly bring myself to accept it.
+Ah, wait. Is this really for me..? I had my eye on this for a while... How did you know?
+I've never received something so perfect... I will cherish it forever. Thank you so much...
+This object... It speaks to me. I will gladly take it, though I don't know how on Earth you thought me worthy.
+I don't think I've ever been so happy... I love it., and I usually hate surprises. Thank you.
+This is so thoughtful... Did you really come up with this all by yourself? You're even more impressive than I thought.
+MiddleGifts
+Oh, a gift..? I don't get a ton of those... Thanks for making my day a bit nicer.
+Oh, hey this has a nice weight to it... I like it. Thanks.
+Ah... I'm new to being put on the spot like this. But it's cute. I like it.
+Nice. Oh, I get to keep it? You won't take it back? Promise?
+Hey this is... This is alright. I think I'll hang onto it for a while. Thank you.
+For me? Really..? It's not even bad... Wow. I don\'t know what to say. Thanks.
+This is pretty cool... You're sure you want me to keep it? Because I will.
+DislikedGifts
+Thanks, I hate it.
+...Would you like to try that again?
+I don't think I really "get" this...
+I didn't know you thought of me that way... How disappointing.
+Ah, figures. I did get bad vibes from you today...
+I'm really not a fan of this kind of thing...
+...Do you really know me THIS poorly?
+Coworker
+ is pretty nice to me... A bit on the loud side for my tastes, but still cool.
+ is a real "strong silent" type. Uh... wait. Maybe not "silent". They're a real "strong" type.
+ seems pretty focused whenever they're at work... I once found them passed out right over there...
+ always makes time to check on how I'm doing... I don't really know what game they're playing here.
+ and I have worked together for a few years now... We're almost friends, right?
+... I still feel like I don't know them all that well, but I can always count on them to be on time with their work.
+ and you are like twins... Not physically. More like "emotional" twins. If you were employed. And actually had a house here.
+HurtCoworker
+ and I... Are closer than you'll be to anyone in your cruel, lonely life.
+ is one of the people I trust most... I would always take their side over yours.
+ works at the same place I do, and has always made me feel welcome... You're nothing in my eyes after what you did.
+ has been nothing but understanding of my... unique personality. Why can't you be more understanding of theirs..?
+'s not over what you did... And I'm not either. Don't talk to me anymore...
+ wasn't so happy with how you acted back there... Do you use violence for all your problems?
+... Was really hurt by what you did. Physically AND emotionally... I don't think I like your vibes...

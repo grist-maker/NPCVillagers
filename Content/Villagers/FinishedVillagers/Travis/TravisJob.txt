@@ -1,0 +1,18 @@
+JobTitle
+Gardener
+Days
+Monday
+Tuesday
+Wednesday
+Thursday
+Friday
+StartTime
+8 0
+EndTime
+16 0
+CommuteTime
+7 30
+WakeTime
+6 0
+SleepTime
+22 0

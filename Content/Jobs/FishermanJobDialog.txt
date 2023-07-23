@@ -1,0 +1,72 @@
+HighAffinity
+I've been fishing for a while, and this late in you start to tell pretty fast what the quality of the thing tugging your line is. Not to be tropey but... You're a real catch!
+You know, I used to think I'd only be happy when I could get a boat, sail far away from here... Knowing you made me feel like I want to stick around and see who else pops into this village.
+I always felt like a bit of a small fish in a big pond... When you swam by, it made me realize that having such a big, blue world out there isn't so bad after all.
+MidAffinity
+You're the type of person I'd like to spend time getting to know more. We should stand next to each other by the pond for hours, in silence so we don't scare away the fish!
+It's so nice getting to meet people that get it, you know? It's all about the simple things... casting out your line and waiting for someone interesting to bite.
+I could get used to talking to you. You're a kind of easygoing, not a crazy busy person, right? And you got an appreciation for more physical workers like me.
+LowAffinity
+I'm not too sure about you, if I'm being honest. Seem a bit too "stuck up" to understand someone with a more physical profession. But maybe give it another go?
+Well... You're a bit rough around the edges, I'm not gonna sugarcoat it. Right now, I'd probably throw you back in the lake and try again.
+Listen... You gotta take time to appreciate your fellow man and the work they do, no matter how small, that's just common sense.
+HighEnergy
+Yep, I've definitely still got it! I could carry a crate-full of fish without breaking a sweat... If I CAUGHT a crate-full of fish.
+Nothin' fills someone with more enrgy than getting to wake up and greet a day full of fishies to be fried and chats to be had with some friends.
+I'm just full of energy today... Makes me wish I had something more active to do than stand outside with a pole all day. Guess I'll just need to wait for some bites.
+MidEnergy
+Day's been long, but rewarding as ever. Burned off some energy with the fish, but still kicking for a while yet.
+Ah... Nothing to tire you like standing out in the heat all day. That, or maybe I just forgot the sunscreen again...
+Lookin to unwind a bit? You came to the right place, I'm gettin' tired myself... Come check out the lake with me?
+LowEnergy
+Not now kid... Need a breather after that last fish I pulled in...
+Give me a chance to rest... Fishing ain't always relaxing.
+Come on... Even outdoorsy types like me need to rest sometimes.
+HappyMood
+Day's been pretty fine. Plenty of sun, nice breeze... Makes me want to go appreciate that lake some more.
+Nothing can get me down today, even a lost salmon! Well... That would be pretty disappointing actually, I take it back.
+Oh I am LUCKY to be alive in such a time! Perfect weather to catch some grub, talk to friends... Or maybe just lay out and enjoy it.
+SadMood
+Twas the most beautiful tuna I ever seen... *sniff* Don't talk to me!
+Can't always be smooth sailing... Sometimes life just jumps up and bites you on the nose, no rhyme or reason... Just leave me alone, kid.
+...Hard to brood while someone's watchin'. Go swim off for a bit, ok?
+AngryMood
+Can't believe how much trash ended up in that lake... Does no one care that's where we get our FOOD?!
+Reeled in a big garbage bag of a day... Just let me stew in this anger for a while.
+Not feelin' it right now, I just gotta be mad for a bit... Like a shark or something. Just go somewhere else.
+ExcitedMood
+What could possibly get better than this? A whole day of fish and folks to see... And tomorrow more of the same! How'd I get so lucky...
+Nice of you to spend such a beautiful day with me. With a friend by your side, the day is jut waiting to be caught!
+A new day is like a pond teeming with life and opportunity to be lived... Really makes you think.
+ScaredMood
+Something tells me there's a shark waiting right around the corner... Not an actual shark, more a metaphorical shark... But still terrifying!
+Looking at the lake today, it seemed so very empty... Struck right fear into my hardened heart...
+What if that storm blows in tomorrow..? Do I have enough fish stored to keep us fed?
+BusyState
+Shhh! You'll scare the fish away.
+Gotta keep concentrating... Talk later.
+Don't interrupt a fisherman at work.
+HurtReactions
+What gives?! I thought we were fishing buddies!
+Don't make me throw you out to sea!
+To the plank with you!
+LikedGifts
+Well I'll be! I haven't caught anything this nice in a loooong time... Thanks.
+Ah, this right here is a real pearl, straight from my favorite clam: You! Much appreciated!
+Mighty kind of you, bringing someone like me a treasure so special... I really appreciate it.
+MiddleGifts
+That's pretty thoughtful, I heard of something like this before. I think the fish'll like it too!
+Well, you sure are something special. Didn't expect I'd get a gift... These misty eyes are just the spirit of the sea...
+I dunno what a crazy old coot like me did to deserve this but... Thanks.  I'm glad you think I'm worth the catch.
+DislikedGifts
+Hm... Can't even make a decent bait out of this...
+Not a big fan of this one... Can you try like a new rod or something next time?
+I can't shake the feeling that this is a declaration of war... Well, I have the sea on my side! Or... the pond.
+Coworker
+'s a solid pal! Real fun fishing buddy, or to just shoot the breeze with time to time.
+ knows even more about fish than me. Absolutely mad, that one!
+ and you don't seem like you'd make a bad team! You're like two fish from the same school, I'd say.
+HurtCoworker
+ told me all about what you did, you kraken. If I see you near them again, I swear...
+ didn't deserve what ya did to them. I have half a mind to drown you right here...
+ is a real good friend of mine... Don't think I don't know the pond scum you are.

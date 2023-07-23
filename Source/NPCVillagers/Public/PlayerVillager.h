@@ -42,10 +42,13 @@ public:
 	AHobbyStation* CurrentHobby = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		bool ConversationTarget = false;
+	bool ConversationTarget = false;
 		
-		UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool ConversationCleanup = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool ConversationCleanup = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool Interacting = false;
 
 protected:
 	// Called when the game starts or when spawned

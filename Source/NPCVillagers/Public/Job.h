@@ -8,6 +8,8 @@
 #include "TimeStamp.h"
 #include "Job.generated.h"
 
+class UDialogBank;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class NPCVILLAGERS_API AJob : public AActor
 {
@@ -57,6 +59,40 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FTimestamp SleepTime;
+
+	UDialogBank* Responses;
+
+	TArray<TArray<FString>*> DialogBanks;
+	/// <summary>
+	/// These functions and variables all carry out and define the process of reading in text files to fill villager dialog banks.
+	/// </summary>
+	bool FindSubBank(FString& StringValue); // Goes through the dialogue file, checking for specific sub-banks and populating them as needed.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueFile") // Specifies the name of the dialogue file which contains the villager's responses.
+		bool UseDialogueFile = false; //Specifies whether or not an external dialogue file is to be used.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueFile")
+		FString DialogueFilePath;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ParameterFile") // Specifies the name of the dialogue file which contains the villager's responses.
+		bool UseParameterFile = false; //Specifies whether or not an external dialogue file is to be used.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ParameterFile")
+		FString ParameterFilePath;
+
+	UFUNCTION(BlueprintCallable)
+		void LoadInDialog();
+
+	TArray<void*> Parameters
+	{
+		&JobTitle,
+		&StartTime,
+		&EndTime,
+		&CommuteTime,
+		&WakeTime,
+		&SleepTime,
+		& Days
+	};
+	int ParameterIndex = 10;
+	void LoadInParameters();
+	bool FindParameter(FString& StringValue);
 
 protected:
 	/// <summary>

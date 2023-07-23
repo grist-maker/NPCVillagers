@@ -1,0 +1,18 @@
+JobTitle
+Software Engineer
+Days
+Monday
+Tuesday
+Wednesday
+Thursday
+Friday
+StartTime
+0 0
+EndTime
+8 0
+CommuteTime
+23 30
+WakeTime
+22 0
+SleepTime
+14 0

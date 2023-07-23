@@ -1,0 +1,17 @@
+JobTitle
+Fisher
+Days
+Monday
+Tuesday
+Wednesday
+Thursday
+StartTime
+5 0
+EndTime
+13 0
+CommuteTime
+4 30
+WakeTime
+3 0
+SleepTime
+19 0
