@@ -76,8 +76,6 @@ public:
 		bool UseParameterFile = false; //Specifies whether or not an external dialogue file is to be used.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ParameterFile")
 		FString ParameterFilePath;
-
-	UFUNCTION(BlueprintCallable)
 		void LoadInDialog();
 
 	TArray<void*> Parameters
@@ -93,6 +91,11 @@ public:
 	int ParameterIndex = 10;
 	void LoadInParameters();
 	bool FindParameter(FString& StringValue);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LinkSetup")
+	bool WorkstationByTag = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LinkSetup")
+	FString WorkstationTag;
 
 protected:
 	/// <summary>

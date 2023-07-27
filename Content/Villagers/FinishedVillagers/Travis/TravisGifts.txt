@@ -1,0 +1,7 @@
+LikedGifts
+motorcycle
+jacket
+sunglasses
+DislikedGifts
+trash
+UFO toy

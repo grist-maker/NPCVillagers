@@ -1,0 +1,8 @@
+Name
+Jogging
+MinHobbyTime
+0 30
+MaxHobbyTime
+1 30
+HobbyDelay
+7 0

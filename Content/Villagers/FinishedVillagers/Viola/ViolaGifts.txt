@@ -1,0 +1,6 @@
+LikedGifts
+game console
+sweater
+DislikedGifts
+trash
+weapon

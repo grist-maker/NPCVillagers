@@ -32,4 +32,23 @@ public:
 
 	void DailyReset();
 	bool CanInvoke(FTimestamp CurrentTime);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ParameterFile")
+		bool UseParameterFile = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ParameterFile")
+		FString ParameterFilePath;
+		void LoadInParameters();
+	bool FindParameter(FString& StringValue, int& PersonalityIndex);
+
+	TArray<void*> Parameters
+	{
+		&MinHobbyTime,
+		&MaxHobbyTime,
+		&HobbyDelay,
+		&Name
+	};
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 };

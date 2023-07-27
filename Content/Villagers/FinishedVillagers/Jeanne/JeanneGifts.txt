@@ -1,0 +1,7 @@
+LikedGifts
+motorcycle
+sunglasses
+clothes
+DislikedGifts
+trash
+rude letter

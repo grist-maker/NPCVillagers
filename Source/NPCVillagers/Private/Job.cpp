@@ -24,7 +24,10 @@ void AJob::LoadInParameters()
 	if (UseParameterFile)
 	{
 		TArray<FString> TextLine;
-		const TCHAR* CharFilePath = *ParameterFilePath;
+
+		FString FinalPath = IFileManager::Get().ConvertToAbsolutePathForExternalAppForRead(*FPaths::ProjectContentDir().Append(ParameterFilePath));
+		const TCHAR* CharFilePath = *FinalPath;
+
 		IPlatformFile* PlatformFile = FPlatformFileManager::Get().FindPlatformFile(CharFilePath);
 
 		if (FPlatformFileManager::Get().GetPlatformFile().FileExists(CharFilePath))
@@ -109,7 +112,9 @@ void AJob::LoadInDialog()
 	if (UseDialogueFile && Responses != nullptr)
 	{
 		TArray<FString> Dialogue;
-		const TCHAR* CharFilePath = *DialogueFilePath;
+
+		FString FinalPath = IFileManager::Get().ConvertToAbsolutePathForExternalAppForRead(*FPaths::ProjectContentDir().Append(DialogueFilePath));
+		const TCHAR* CharFilePath = *FinalPath;
 		IPlatformFile* PlatformFile = FPlatformFileManager::Get().FindPlatformFile(CharFilePath);
 
 		if (FPlatformFileManager::Get().GetPlatformFile().FileExists(CharFilePath))

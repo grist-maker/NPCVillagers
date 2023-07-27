@@ -1,0 +1,7 @@
+LikedGifts
+clothes
+plushie
+sleep mask
+DislikedGifts
+trash
+self-help book

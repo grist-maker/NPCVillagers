@@ -1,0 +1,7 @@
+LikedGifts
+power
+hair gel
+coat
+DislikedGifts
+pizza
+trash

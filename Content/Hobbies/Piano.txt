@@ -1,0 +1,8 @@
+Name
+Piano
+MinHobbyTime
+0 30
+MaxHobbyTime
+2 0
+HobbyDelay
+1 30

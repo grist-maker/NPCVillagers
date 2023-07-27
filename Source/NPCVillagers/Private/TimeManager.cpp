@@ -5,6 +5,14 @@ void ATimeManager::BeginPlay()
 {
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABaseVillager::StaticClass(), Villagers);
 
+	Player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+
+	GetWorldTimerManager().SetTimer(CoworkerDelay, this, &ATimeManager::CoworkerSetup, 1, false);
+	GetWorldTimerManager().SetTimer(SecondCounter, this, &ATimeManager::NewMinute, 0.2f, true, 0.2f);
+}
+
+void ATimeManager::CoworkerSetup()
+{
 	for (int i = 0; i < Villagers.Num(); i++)
 	{
 		auto NewVillager = Cast<ABaseVillager>(Villagers[i]);
@@ -16,7 +24,6 @@ void ATimeManager::BeginPlay()
 				if (Career->JobTitle == "Software Engineer")
 				{
 					SoftwareEngineers.Add(NewVillager);
-					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Coworker added"));
 				}
 				else if (Career->JobTitle == "Gardener")
 				{
@@ -26,17 +33,13 @@ void ATimeManager::BeginPlay()
 				{
 					Merchants.Add(NewVillager);
 				}
-				else if(Career->JobTitle == "Fisher")
+				else if (Career->JobTitle == "Fisher")
 				{
 					Fishers.Add(NewVillager);
 				}
 			}
 		}
 	}
-	Player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-
-	GetWorldTimerManager().SetTimer(SecondCounter, this, &ATimeManager::NewMinute, 0.2f, true, 0.2f);
-	NextMoodTime = MorningMoodTime;
 }
 
 void ATimeManager::NewMinute()

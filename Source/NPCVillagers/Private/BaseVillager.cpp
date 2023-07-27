@@ -27,6 +27,296 @@ void ABaseVillager::BeginPlay()
 		JobOvertimeEnd = Career->EndTime;
 	}
 	LoadInDialog();
+	LoadInGift();
+	LoadInPersonality();
+}
+
+void ABaseVillager::LoadInPersonality()
+{
+	if (UsePersonalityFile && Responses != nullptr)
+	{
+		int PersonalityIndex = 100;
+		TArray<FString>  PersonalityArray;
+	
+		FString FinalPath = IFileManager::Get().ConvertToAbsolutePathForExternalAppForRead(*FPaths::ProjectContentDir().Append(PersonalityFilePath));
+		const TCHAR* CharFilePath = *FinalPath;
+
+		IPlatformFile* PlatformFile = FPlatformFileManager::Get().FindPlatformFile(CharFilePath);
+		if (FPlatformFileManager::Get().GetPlatformFile().FileExists(CharFilePath))
+		{
+			FFileHelper::LoadFileToStringArray(PersonalityArray, CharFilePath);
+			for (int i = 0; i < PersonalityArray.Num(); i++)
+			{
+				if (!FindPersonality(PersonalityArray[i], PersonalityIndex) && PersonalityIndex < 100)
+				{
+					if (PersonalityIndex < FloatVariables.Num())
+					{
+						*FloatVariables[PersonalityIndex] = FCString::Atof(*PersonalityArray[i]);
+					}
+					else if (PersonalityIndex < FloatVariables.Num() + IntVariables.Num())
+					{
+						*IntVariables[PersonalityIndex - FloatVariables.Num()] = FCString::Atoi(*PersonalityArray[i]);
+					}
+					else if (PersonalityIndex < FloatVariables.Num() + IntVariables.Num() + MoodVariables.Num())
+					{
+						for (int j = static_cast<int>(UMood::Happy); j < 5; j++)
+						{
+							FString CurrentMood = UEnum::GetDisplayValueAsText(static_cast<UMood>(j)).ToString();
+							if (PersonalityArray[i].Equals(CurrentMood))
+							{
+								*MoodVariables[PersonalityIndex - FloatVariables.Num() - IntVariables.Num()] = static_cast<UMood>(j);
+							}
+						}
+					}
+					else if (PersonalityIndex < FloatVariables.Num() + IntVariables.Num() + MoodVariables.Num() + TimestampVariables.Num())
+					{
+						auto Index = PersonalityArray[i].Find(" ");
+						if (Index < PersonalityArray[i].Len())
+						{
+							(TimestampVariables[PersonalityIndex - FloatVariables.Num() - IntVariables.Num() - MoodVariables.Num()])->Hour = FCString::Atoi(*PersonalityArray[i].Left(Index));
+							(TimestampVariables[PersonalityIndex - FloatVariables.Num() - IntVariables.Num() - MoodVariables.Num()])->Minute = FCString::Atoi(*PersonalityArray[i].Right(PersonalityArray[i].Len() - Index));
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+bool ABaseVillager::FindPersonality(FString& StringValue, int& PersonalityIndex)
+{
+	if (StringValue.Equals("Energy", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 0;
+		return true;
+	}
+	if (StringValue.Equals("PlayerAffinity", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 1;
+		return true;
+	}
+	if (StringValue.Equals("Happiness", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 2;
+		return true;
+	}
+	if (StringValue.Equals("Anger", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 3;
+		return true;
+	}
+	if (StringValue.Equals("Fear", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 4;
+		return true;
+	}
+	if (StringValue.Equals("Sadness", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 5;
+		return true;
+	}
+	if (StringValue.Equals("Excitement", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 6;
+		return true;
+	}
+	if (StringValue.Equals("PositiveMoodPercent", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 7;
+		return true;
+	}
+	if (StringValue.Equals("NegativeMoodPercent", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 8;
+		return true;
+	}
+	if (StringValue.Equals("HurtAffinity", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 9;
+		return true;
+	}
+	if (StringValue.Equals("LikedGiftAffinity", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 10;
+		return true;
+	}
+	if (StringValue.Equals("BaseGiftAffinity", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 11;
+		return true;
+	}
+	if (StringValue.Equals("DislikedGiftAffinity", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 12;
+		return true;
+	}
+	if (StringValue.Equals("TalkAffinity", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 13;
+		return true;
+	}
+	if (StringValue.Equals("HobbyAffinity", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 14;
+		return true;
+	}
+	if (StringValue.Equals("MoodGain", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 15;
+		return true;
+	}
+	if (StringValue.Equals("MoodDrain", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 16;
+		return true;
+	}
+	if (StringValue.Equals("RelaxEnergyGain", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 17;
+		return true;
+	}
+	if (StringValue.Equals("UnconsciousEnergyGain", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 18;
+		return true;
+	}
+	if (StringValue.Equals("SleepEnergyGain", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 19;
+		return true;
+	}
+	if (StringValue.Equals("JobEnergyDrain", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 20;
+		return true;
+	}
+	if (StringValue.Equals("BaseEnergyDrain", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 21;
+		return true;
+	}
+	if (StringValue.Equals("HobbyEnergyDrain", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 22;
+		return true;
+	}
+	if (StringValue.Equals("NegativeMoodEnergyDrain", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 23;
+		return true;
+	}
+	if (StringValue.Equals("MeanderPercent", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 24;
+		return true;
+	}
+	if (StringValue.Equals("HobbyPercent", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 25;
+		return true;
+	}
+	if (StringValue.Equals("ConversePercent", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 26;
+		return true;
+	}
+	if (StringValue.Equals("AffinityLevelMin", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 27;
+		return true;
+	}
+	if (StringValue.Equals("AffinityLevelMax", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 28;
+		return true;
+	}
+	if (StringValue.Equals("EnergyLevelMin", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 29;
+		return true;
+	}
+	if (StringValue.Equals("EnergyLevelMax", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = 30;
+		return true;
+	}
+	if (StringValue.Equals("PlayerHits", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = FloatVariables.Num();
+		return true;
+	}
+	if (StringValue.Equals("ConverseMinExecutions", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = FloatVariables.Num()+1;
+		return true;
+	}
+	if (StringValue.Equals("ConverseMaxExecutions", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = FloatVariables.Num()+2;
+		return true;
+	}
+	if (StringValue.Equals("PositivePreference", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = FloatVariables.Num() + IntVariables.Num();
+		return true;
+	}
+	if (StringValue.Equals("NegativePreference", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = FloatVariables.Num() + IntVariables.Num()+1;
+		return true;
+	}
+	if (StringValue.Equals("ConverseMinTime", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = FloatVariables.Num() + IntVariables.Num() + MoodVariables.Num();
+		return true;
+	}
+	if (StringValue.Equals("ConverseMaxTime", ESearchCase::IgnoreCase))
+	{
+		PersonalityIndex = FloatVariables.Num() + IntVariables.Num() + MoodVariables.Num()+1;
+		return true;
+	}
+	return false;
+}
+
+void ABaseVillager::LoadInGift()
+{
+	if (UseGiftFile && Responses != nullptr)
+	{
+		int GiftIndex = 2;
+		TArray<FString>  GiftArray;
+
+		FString FinalPath = IFileManager::Get().ConvertToAbsolutePathForExternalAppForRead(*FPaths::ProjectContentDir().Append(GiftFilePath));
+		const TCHAR* CharFilePath = *FinalPath;
+		IPlatformFile* PlatformFile = FPlatformFileManager::Get().FindPlatformFile(CharFilePath);
+
+		if (FPlatformFileManager::Get().GetPlatformFile().FileExists(CharFilePath))
+		{
+			FFileHelper::LoadFileToStringArray(GiftArray, CharFilePath);
+			for (int i = 0; i < GiftArray.Num(); i++)
+			{
+				if (!FindGift(GiftArray[i], GiftIndex) && GiftIndex < 2)
+				{
+					Gifts[GiftIndex]->Add(GiftArray[i]);
+				}
+			}
+		}
+	}
+}
+
+bool ABaseVillager::FindGift(FString& StringValue, int& GiftIndex)
+{
+	if (StringValue.Equals("LikedGifts", ESearchCase::IgnoreCase))
+	{
+		GiftIndex = 0;
+		return true;
+	}
+	if (StringValue.Equals("DislikedGifts", ESearchCase::IgnoreCase))
+	{
+		GiftIndex = 1;
+		return true;
+	}
+	return false;
 }
 
 void ABaseVillager::LoadInDialog()
@@ -34,7 +324,10 @@ void ABaseVillager::LoadInDialog()
 	if (UseDialogueFile && Responses != nullptr)
 	{
 		TArray<FString>  Dialogue;
-		const TCHAR* CharFilePath = *FilePath;
+
+		FString FinalPath = IFileManager::Get().ConvertToAbsolutePathForExternalAppForRead(*FPaths::ProjectContentDir().Append(DialogueFilePath));
+		const TCHAR* CharFilePath = *FinalPath;
+
 		IPlatformFile* PlatformFile = FPlatformFileManager::Get().FindPlatformFile(CharFilePath);
 
 		if (FPlatformFileManager::Get().GetPlatformFile().FileExists(CharFilePath))
@@ -261,25 +554,24 @@ void ABaseVillager::ConverseTransition()
 		{
 			if (static_cast<APlayerVillager*>(ConversationPartner) != nullptr && !static_cast<APlayerVillager*>(ConversationPartner)->ConversationTarget && !static_cast<APlayerVillager*>(ConversationPartner)->Interacting && static_cast<APlayerVillager*>(ConversationPartner)->InteractedNPC == nullptr)
 			{
-	//			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Conversation with player!"));
 				Talk();
 				static_cast<APlayerVillager*>(PlayerPawn)->ConversationTarget = true;
 				PlayerConversationInitiated = true;
 			}
 			else if(static_cast<ABaseVillager*>(ConversationPartner) != nullptr && CanTalk() && static_cast<ABaseVillager*>(ConversationPartner)->CanTalk())
 			{
-		//		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Conversation with villager!"));
 				auto ConverseOptions = IdleOptions[CurrentIdleBehavior];
 
 				CurrentTime.GenerateRandomTime(ConverseOptions->MinTime, ConverseOptions->MaxTime, ConverseOptions->StartTime, ConverseOptions->LastTime);
 
-				static_cast<ABaseVillager*>(ConversationPartner)->IdleOptions[2]->StartTime = ConverseOptions->StartTime;
-				static_cast<ABaseVillager*>(ConversationPartner)->IdleOptions[2]->LastTime = ConverseOptions->LastTime;
+				if (static_cast<ABaseVillager*>(ConversationPartner) != nullptr)
+				{
+					static_cast<ABaseVillager*>(ConversationPartner)->IdleOptions[2]->StartTime = ConverseOptions->StartTime;
+					static_cast<ABaseVillager*>(ConversationPartner)->IdleOptions[2]->LastTime = ConverseOptions->LastTime;
 
-				Talk();
-				static_cast<ABaseVillager*>(ConversationPartner)->Talk();
-
-			//	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("%d:%d"), ConverseOptions->LastTime.Hour, ConverseOptions->LastTime.Minute));
+					Talk();
+					static_cast<ABaseVillager*>(ConversationPartner)->Talk();
+				}
 			}
 		}
 	}
@@ -299,7 +591,6 @@ void ABaseVillager::HobbyTransition()
 		CurrentHobby = InvokedHobby->Name;
 
 		CurrentTime.GenerateRandomTime(InvokedHobby->MinHobbyTime, InvokedHobby->MaxHobbyTime, InvokedHobby->LastHobbyStartTime, InvokedHobby->ActiveHobbyEndTime);
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("%d:%d"), InvokedHobby->ActiveHobbyEndTime.Hour, InvokedHobby->ActiveHobbyEndTime.Minute));
 		State = UState::Hobby;
 	}
 }
@@ -488,7 +779,6 @@ void ABaseVillager::IdleBehaviors()
 				CurrentIdleBehavior = 1;
 				if (AttemptHobbySelection())
 				{
-					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Hobby selected"));
 					State = UState::Walking;
 					return;
 				}
@@ -522,7 +812,6 @@ void ABaseVillager::IdleBehaviors()
 void ABaseVillager::DecrementConversations()
 {
 	IdleOptions[2]->CurrentExecutions -= 1;
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("%d"), IdleOptions[2]->CurrentExecutions));
 }
 
 void ABaseVillager::InitiateConversation()
@@ -541,7 +830,6 @@ AActor* ABaseVillager::ChoosePartner()
 	
 	if (PlayerAffinity > AffinityLevels[0] && ChosenTarget < PlayerAffinity && !static_cast<APlayerVillager*>(PlayerPawn)->ConversationTarget && !static_cast<APlayerVillager*>(PlayerPawn)->Interacting)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Conversation with player!"));
 		auto NumberOfTimes = FMath::RandRange(IdleOptions[2]->MinExecutions, IdleOptions[2]->MaxExecutions);
 		IdleOptions[2]->CurrentExecutions = NumberOfTimes;
 		return PlayerPawn;
@@ -554,7 +842,7 @@ AActor* ABaseVillager::ChoosePartner()
 			int RandomSelection = FMath::RandRange(0, VillagerNumber-1);
 			auto ChosenVillager = static_cast<ABaseVillager*>(WorldManager->Villagers[RandomSelection]);
 
-			if (ChosenVillager != nullptr && this != ChosenVillager  && CanStartConversation() && ChosenVillager->CanStartConversation())
+			if (ChosenVillager != nullptr && this != ChosenVillager  && CanStartConversation() && ChosenVillager->CanStartConversation() && ChosenVillager->CurrentIdleBehavior != 2)
 			{
 				auto VillagerCasted = static_cast<ABaseVillager*>(ChosenVillager);
 		
@@ -669,7 +957,6 @@ void ABaseVillager::UpdateStatus()
 	}
 	if (State != UState::Hobby && State != UState::Talking && CurrentHobby != "")
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("State is not hobby or talking"));
 		if (!TravelingToHobby || Commuting || AtWork)
 		{
 			TargetHobby = Hobbies.Num();

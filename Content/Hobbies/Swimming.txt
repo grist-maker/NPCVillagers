@@ -1,0 +1,8 @@
+Name
+Swimming
+MinHobbyTime
+1 30
+MaxHobbyTime
+3 30
+HobbyDelay
+8 0

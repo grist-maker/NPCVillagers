@@ -1,0 +1,7 @@
+LikedGifts
+pizza
+strawberries
+money
+DislikedGifts
+trash
+bills

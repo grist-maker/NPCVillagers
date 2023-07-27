@@ -63,6 +63,8 @@ public:
 	/// </summary>
 	FTimerHandle SecondCounter;
 
+	FTimerHandle CoworkerDelay;
+
 	/// <summary>
 	/// An array of all of the Villagers in a scene, allowing the time manager to periodically update them with new data.
 	/// </summary>
@@ -114,5 +116,13 @@ private:
 	/// </summary>
 	void NewMinute();
 
+	/// <summary>
+	/// 
+	/// </summary>
+	void CoworkerSetup();
+
+	/// <summary>
+	/// 
+	/// </summary>
 	void CheckForMoodUpdate();
 };

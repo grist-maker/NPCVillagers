@@ -59,7 +59,13 @@ public:
 	TArray<FString>LikedGifts; //This array of strings has values that each correspond to the name of a gift the villager likes.
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blocks")
-	TArray<FString> DislikedGifts; //This array of strings has values that each correspond to the name of a gift the villager dislikes.
+		TArray<FString> DislikedGifts; //This array of strings has values that each correspond to the name of a gift the villager dislikes.
+
+	TArray<TArray<FString>*> Gifts //String arrays of each of the gift types, provided in a single array for easy reference.
+	{
+		&LikedGifts,
+		&DislikedGifts
+	};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blocks")
 	AJob* Career; //A reference to the villager's job. This object contains the relevant variables that allow the villager to go to work.
@@ -74,18 +80,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variables") //The physical state (what they're doing) of the NPC.
 	UState State;
 
-	UState PreviousState;
+	UState PreviousState; // The previously recorded state of the NPC, commonly used to transition back after talking to what they were doing before.
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variables") //The emotional state of the NPC.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variables") // The dominant emotional state of the NPC.
 	UMood Mood;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variables")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variables") // The energy of the NPC.
 	float Energy;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variables") //The affinity the NPC has towards the player (0-100)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variables") // The affinity the NPC has towards the player (0-100)
 	float PlayerAffinity;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variables") //How many times the player has hit the NPC.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variables") // How many times the player has hit the NPC.
 	int PlayerHits;
 
 
@@ -145,9 +151,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GaugeLevels")
 	TArray<float> EnergyLevels = { 30, 70 };
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GaugeLevels")
-	TArray<float> MoodLevels = { 30, 70 };
 
 	/// <summary>
 	/// Change Amounts specify how much an NPC's corresponding meter is adjusted when an action is performed.
@@ -296,7 +299,6 @@ public:
 	};
 
 
-
 	/// <summary>
 	/// These functions and variable work to carry out the Villager-initiated conversation subbehavior.
 	/// </summary>	
@@ -319,8 +321,7 @@ public:
 	void EndInitiatedDialog(); //Ends an NPC-initiated conversation on the calling NPC's end.
 	AActor* ConversationPartner; //A pointer to an actor, representing a conversation partner.
 
-
-
+	
 	/// <summary>
 	/// These variables and functions define meander subbehaviors.
 	/// </summary>
@@ -373,19 +374,106 @@ public:
 	/// </summary>
 	void UpdateAffinity(); //Updates the affinity, clamping it if necessary, on the villager.
 
-	TArray<TArray<FString>*> DialogBanks;
+
 	/// <summary>
 	/// These functions and variables all carry out and define the process of reading in text files to fill villager dialog banks.
 	/// </summary>
-	bool FindSubBank(FString& StringValue); // Goes through the dialogue file, checking for specific sub-banks and populating them as needed.
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueFile") // Specifies the name of the dialogue file which contains the villager's responses.
+	TArray<TArray<FString>*> DialogBanks; // Holds pointers to string arrays used to define current dialog sub-banks. Used to keep track of which is currently being populated.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueFile")
 	bool UseDialogueFile = false; //Specifies whether or not an external dialogue file is to be used.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueFile")
-	FString FilePath;
+	FString DialogueFilePath; //Specifies the path at which the dialog file can be found.
+	void LoadInDialog(); //Used to load in dialog, through repeated calls to find sub bank and subarray population.
+	bool FindSubBank(FString& StringValue); // Goes through the dialogue file, checking for specific sub-banks and populating them as needed.	
 
-	UFUNCTION(BlueprintCallable)
-	void LoadInDialog();
 
-	UPROPERTY(BlueprintReadWrite)
-	bool DialogLoaded = false;
+	/// <summary>
+	/// These functions and variables all carry out and define the process of reading in text files to fill villager gift data.
+	/// </summary>
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GiftFile")
+	bool UseGiftFile = false; //Specifies whether or not an external gift file is to be used.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GiftFile")
+	FString GiftFilePath; // Specifies the name of the gift txt file which contains the villager's responses.
+	void LoadInGift(); //Used to load in gift values, through repeated calls to find the gift and populate it.
+	bool FindGift(FString& StringValue, int& GiftIndex); // Goes through the gift file, checking for specific arrays and populating them as needed.	
+
+
+	/// <summary>
+	/// These functions and variables all carry out and define the process of reading in text files to fill villager parameters.
+	/// </summary>
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PersonalityFile")
+	bool UsePersonalityFile = false; //Specifies whether or not an external personality file is to be used.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PersonalityFile")
+	FString PersonalityFilePath; // Specifies the name of the personality txt file which contains the villager's responses.
+	void LoadInPersonality(); //Used to load in personality values, through repeated calls to find personality and variable assignment.
+	bool FindPersonality(FString& StringValue, int& PersonalityIndex); // Goes through the personality file, checking for specific variables and setting them as needed.	
+
+	TArray<float*> FloatVariables
+	{
+		&Energy, //0
+		&PlayerAffinity, //1
+		&Happiness, //2
+		&Anger, //3
+		&Fear,//4
+		&Sadness, //5
+		&Excitement, //6
+		&PositiveMoodPercent, //7
+		&NegativeMoodPercent, //8
+		&HurtAffinity, //9
+		&LikedGiftAffinity, //10
+		&BaseGiftAffinity, //11
+		&DislikedGiftAffinity, //12
+		&TalkAffinity, //13
+		&HobbyAffinity, //14
+		&MoodGain, //15
+		&MoodDrain, //16
+		&RelaxEnergyGain, //17
+		&UnconsciousEnergyGain, //18
+		&SleepEnergyGain, //19
+		&JobEnergyDrain, //20
+		&BaseEnergyDrain, //21
+		&HobbyEnergyDrain, //22
+		&NegativeMoodEnergyDrain, //23
+		&IdleOptions[0]->Percent, //24
+		&IdleOptions[1]->Percent, //25
+		&IdleOptions[2]->Percent, //26
+		&AffinityLevels[0], //27
+		&AffinityLevels[1], //28
+		&EnergyLevels[0], //29
+		&EnergyLevels[1] //30
+	};
+
+	TArray<int*> IntVariables
+	{
+		&PlayerHits, //0
+		&IdleOptions[2]->MinExecutions, //1
+		&IdleOptions[2]->MaxExecutions //2
+	};
+
+	TArray<UMood*> MoodVariables
+	{
+		&PositivePreference, //0
+		&NegativePreference //1
+	};
+
+	TArray<FTimestamp*> TimestampVariables
+	{
+		&IdleOptions[2]->MinTime, //0
+		&IdleOptions[2]->MaxTime //1
+	};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LinkSetup")
+		bool JobByTag = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LinkSetup")
+		FString JobTag;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LinkSetup")
+		bool BedByTag = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LinkSetup")
+		FString BedTag;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LinkSetup")
+		bool HobbyByTag = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LinkSetup")
+		TArray<FString> HobbyTags;
 };

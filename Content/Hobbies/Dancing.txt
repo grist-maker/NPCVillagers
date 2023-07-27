@@ -1,0 +1,8 @@
+Name
+Dancing
+MinHobbyTime
+0 30
+MaxHobbyTime
+2 30
+HobbyDelay
+2 0

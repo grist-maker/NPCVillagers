@@ -1,0 +1,8 @@
+Name
+Exercise
+MinHobbyTime
+0 30
+MaxHobbyTime
+2 30
+HobbyDelay
+8 0

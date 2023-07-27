@@ -1,0 +1,6 @@
+LikedGifts
+cake
+camera
+DislikedGifts
+trash
+5g

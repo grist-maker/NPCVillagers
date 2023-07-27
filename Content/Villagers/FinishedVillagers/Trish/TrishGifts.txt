@@ -1,0 +1,7 @@
+LikedGifts
+pizza
+motorcycle
+magazine
+DislikedGifts
+trash
+flyswatter
