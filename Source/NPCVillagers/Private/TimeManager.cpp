@@ -8,7 +8,7 @@ void ATimeManager::BeginPlay()
 	Player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 
 	GetWorldTimerManager().SetTimer(CoworkerDelay, this, &ATimeManager::CoworkerSetup, 1, false);
-	GetWorldTimerManager().SetTimer(SecondCounter, this, &ATimeManager::NewMinute, 0.2f, true, 0.2f);
+	GetWorldTimerManager().SetTimer(SecondCounter, this, &ATimeManager::NewMinute, 0.2f, true, 1);
 }
 
 void ATimeManager::CoworkerSetup()
@@ -163,8 +163,8 @@ void ATimeManager::ProgressTime(FTimestamp& Progress)
 
 void ATimeManager::UpdateVillagers()
 {
-	JobUpdate();
 	EnergyUpdate();
+	JobUpdate();
 }
 
 void ATimeManager::JobUpdate()

@@ -558,7 +558,7 @@ void ABaseVillager::ConverseTransition()
 				static_cast<APlayerVillager*>(PlayerPawn)->ConversationTarget = true;
 				PlayerConversationInitiated = true;
 			}
-			else if(static_cast<ABaseVillager*>(ConversationPartner) != nullptr && CanTalk() && static_cast<ABaseVillager*>(ConversationPartner)->CanTalk())
+			else if(CanTalk() && static_cast<ABaseVillager*>(ConversationPartner) != nullptr && static_cast<ABaseVillager*>(ConversationPartner)->CanTalk())
 			{
 				auto ConverseOptions = IdleOptions[CurrentIdleBehavior];
 
@@ -1035,12 +1035,14 @@ void ABaseVillager::EndDialog()
 
 void ABaseVillager::CheckOnJob(const UWeekday& CurrentDay)
 {
-	if (!DoneWork && Career != nullptr)
+	if (!DoneWork && Career != nullptr && State != UState::Asleep && !GoingToBed)
 	{
 		if (State != UState::Talking || CurrentIdleBehavior < 3)
 		{
 			if (CurrentTime.BetweenTwoTimes(Career->CommuteTime, JobOvertimeEnd) && !Commuting && !AtWork && Career->Days.Contains(CurrentDay))
 			{
+				JobOvertimeEnd = Career->EndTime;
+				JobOvertimeEnd.Minute = JobOvertimeEnd.Minute + OvertimeMinutes;
 				Commuting = true;
 				NPCAIController->MoveToActor(Career->Workstation, 0, true);
 				if (State == UState::Talking)
@@ -1053,7 +1055,7 @@ void ABaseVillager::CheckOnJob(const UWeekday& CurrentDay)
 				}
 				State = UState::Walking;
 			}
-			else if (!CurrentTime.BetweenTwoTimes(Career->CommuteTime, JobOvertimeEnd) && AtWork)
+			else if (!CurrentTime.BetweenTwoTimes(Career->CommuteTime, JobOvertimeEnd) && AtWork )
 			{
 				AtWork = false;
 				DoneWork = true;

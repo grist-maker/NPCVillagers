@@ -1,7 +1,7 @@
 Energy
 100
 PlayerAffinity
-100
+50
 Happiness
 50
 Fear
